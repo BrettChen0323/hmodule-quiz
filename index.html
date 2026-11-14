@@ -1,0 +1,941 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>H 模块 · 广联达杯 BIM 城市更新 模拟练习</title>
+<meta name="description" content="广联达杯 H 模块备赛：60 题限时模拟 + 分章节专项 + 问答题卡 + 错题本 + 必背速记卡，150 道题，手机电脑都能做。">
+<meta name="theme-color" content="#0e7490">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='14' fill='%230e7490'/%3E%3Ctext x='32' y='45' font-size='36' font-family='Arial,Helvetica,sans-serif' font-weight='bold' fill='white' text-anchor='middle'%3EH%3C/text%3E%3C/svg%3E">
+<style>
+:root{
+  --bg:#eef4f8; --ink:#0f2b3d; --muted:#5b7386; --line:#e2ebf1; --card:#fff;
+  --brand:#0e7490; --brand2:#14b8a6; --warn:#f59e0b; --bad:#e11d48; --good:#15803d;
+  --grad:linear-gradient(135deg,#0b3d5c 0%,#12788f 55%,#14b8a6 100%);
+  --radius:18px; --shadow:0 10px 30px rgba(12,50,70,.09);
+}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{
+  background:
+    radial-gradient(900px 420px at 12% -8%,#d6ecf3 0%,transparent 60%),
+    radial-gradient(700px 380px at 105% 0%,#dcf3ee 0%,transparent 55%),
+    var(--bg);
+  color:var(--ink);
+  font-family:"PingFang SC","Microsoft YaHei","Segoe UI",system-ui,-apple-system,sans-serif;
+  font-size:15px; line-height:1.65; -webkit-font-smoothing:antialiased;
+}
+.app{max-width:900px;margin:0 auto;padding:18px 16px 72px}
+button{font-family:inherit;cursor:pointer}
+.hidden{display:none !important}
+.screen{display:none;animation:fade .22s ease}
+.screen.active{display:block}
+@keyframes fade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+/* ===== 头部 ===== */
+.hero{background:var(--grad);color:#fff;border-radius:22px;padding:22px 22px 20px;box-shadow:0 16px 40px rgba(11,61,92,.22);position:relative;overflow:hidden}
+.hero::after{content:"";position:absolute;right:-40px;bottom:-70px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.08)}
+.hero::before{content:"";position:absolute;right:60px;bottom:-90px;width:160px;height:160px;border-radius:50%;background:rgba(255,255,255,.07)}
+.hero h1{margin:0 0 6px;font-size:24px;letter-spacing:.5px;font-weight:700}
+.hero p{margin:0;color:#d9f2f7;font-size:13.5px}
+.pills{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.pill{background:rgba(255,255,255,.16);border:1px solid rgba(255,255,255,.22);color:#fff;border-radius:999px;padding:4px 12px;font-size:12.5px}
+
+/* ===== 卡片 ===== */
+.card{background:var(--card);border-radius:var(--radius);box-shadow:var(--shadow);padding:18px 20px;margin-top:16px;border:1px solid rgba(226,235,241,.9)}
+.sec-title{display:flex;align-items:baseline;justify-content:space-between;gap:10px;margin:0 0 12px}
+.sec-title h2{margin:0;font-size:16.5px}
+.sec-title .tip{color:var(--muted);font-size:12.5px}
+
+/* ===== 首页统计 ===== */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:16px}
+.stat{background:#fff;border-radius:14px;padding:12px 10px;text-align:center;box-shadow:var(--shadow);border:1px solid var(--line)}
+.stat b{display:block;font-size:20px;color:var(--brand);font-variant-numeric:tabular-nums}
+.stat span{font-size:12px;color:var(--muted)}
+
+/* ===== 模式卡 ===== */
+.modes{display:grid;gap:12px}
+.mode{display:flex;align-items:center;gap:14px;padding:15px 16px;border-radius:16px;border:1.5px solid var(--line);background:#fbfdfe;transition:.15s;text-align:left;width:100%}
+.mode:hover{border-color:#9fd8d0;background:#f2fbf9;transform:translateY(-1px)}
+.mode .ico{width:44px;height:44px;border-radius:12px;display:grid;place-items:center;font-size:20px;flex:0 0 auto;background:#e6f4f7}
+.mode .txt{flex:1;min-width:0}
+.mode .txt b{display:block;font-size:15.5px}
+.mode .txt small{color:var(--muted);font-size:12.5px;display:block;margin-top:1px}
+.mode .go{color:var(--brand);font-weight:700;font-size:13px;white-space:nowrap}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1.5px solid var(--line);background:#fff;border-radius:999px;padding:6px 13px;font-size:13px;color:var(--ink);transition:.15s}
+.chip:hover{border-color:#9fd8d0}
+.chip.on{background:var(--brand);border-color:var(--brand);color:#fff}
+.chip .n{opacity:.7;font-size:11.5px;margin-left:4px}
+
+/* ===== 考试/练习 ===== */
+.topbar{position:sticky;top:0;z-index:20;margin:0 -16px;padding:10px 16px;background:rgba(238,244,248,.92);backdrop-filter:blur(10px);border-bottom:1px solid rgba(226,235,241,.9)}
+.topbar .row{max-width:900px;margin:0 auto;display:flex;align-items:center;gap:10px}
+.bar{flex:1;height:7px;border-radius:99px;background:#cfdde6;overflow:hidden;min-width:60px}
+.bar i{display:block;height:100%;width:0;background:var(--grad);border-radius:99px;transition:width .25s}
+.timer{font-variant-numeric:tabular-nums;font-weight:700;font-size:15px;color:var(--brand);background:#fff;border:1px solid var(--line);padding:3px 11px;border-radius:999px;white-space:nowrap}
+.timer.low{color:#fff;background:var(--bad);border-color:var(--bad);animation:pulse 1.4s infinite}
+@keyframes pulse{50%{opacity:.72}}
+.iconbtn{background:#fff;border:1px solid var(--line);border-radius:10px;padding:6px 11px;font-size:13px;color:var(--ink);white-space:nowrap}
+.iconbtn:hover{border-color:#9fd8d0}
+.iconbtn.primary{background:var(--brand);border-color:var(--brand);color:#fff}
+.iconbtn.primary:hover{background:#0a5f77}
+.iconbtn:disabled{opacity:.5;cursor:not-allowed}
+
+.qmeta{display:flex;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.tag{font-size:11.5px;padding:2px 9px;border-radius:999px;background:#e6f4f7;color:#0d6a80;white-space:nowrap}
+.tag.gray{background:#eef2f5;color:#5b7386}
+.tag.water{background:#e0f2fe;color:#0369a1}
+.tag.warn{background:#fef3c7;color:#92400e}
+.stem{font-size:16.5px;font-weight:600;line-height:1.7;margin:6px 0 16px;white-space:pre-wrap}
+.opts{display:grid;gap:10px}
+.opt{display:flex;align-items:flex-start;gap:11px;width:100%;text-align:left;background:#fbfdfe;border:1.5px solid var(--line);border-radius:13px;padding:12px 14px;font-size:15px;line-height:1.6;transition:.13s;color:var(--ink)}
+.opt:hover{border-color:#9fd8d0;background:#f2fbf9}
+.opt .k{flex:0 0 auto;width:24px;height:24px;border-radius:8px;background:#eef2f5;color:#476173;display:grid;place-items:center;font-size:12.5px;font-weight:700;margin-top:1px}
+.opt.sel{border-color:var(--brand);background:#eaf7fa}
+.opt.sel .k{background:var(--brand);color:#fff}
+.opt.sel::after{content:"✓";margin-left:auto;color:var(--brand);font-weight:800}
+.opt.ok{border-color:#22c55e;background:#f0fdf4}
+.opt.ok .k{background:#22c55e;color:#fff}
+.opt.ok::after{content:"正确";margin-left:auto;color:#15803d;font-size:12px;font-weight:700}
+.opt.no{border-color:#fca5a5;background:#fef2f2}
+.opt.no .k{background:#ef4444;color:#fff}
+.opt.no::after{content:"你选的";margin-left:auto;color:#b91c1c;font-size:12px;font-weight:700}
+.opt.dim{opacity:.62}
+.opt:disabled{cursor:default}
+.explain{margin-top:14px;border-left:4px solid var(--brand2);background:#f5fbfb;border-radius:0 12px 12px 0;padding:12px 14px;font-size:14px}
+.explain .ansline{font-weight:700;margin-bottom:5px}
+.explain .ansline b{color:var(--good)}
+.explain .kp{color:var(--muted);font-size:12.5px;margin-top:8px;border-top:1px dashed #cfe4e7;padding-top:7px}
+.actions{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px;align-items:center}
+.spacer{flex:1}
+.hint{color:var(--muted);font-size:12.5px}
+
+/* ===== 答题卡 ===== */
+.sheet{position:fixed;inset:0;background:rgba(10,35,50,.42);z-index:60;display:none;align-items:flex-end;justify-content:center;padding:0}
+.sheet.on{display:flex}
+.sheet .panel{background:#fff;border-radius:22px 22px 0 0;width:100%;max-width:900px;max-height:82vh;overflow:auto;padding:18px 18px 26px;box-shadow:0 -14px 40px rgba(0,0,0,.18);animation:up .2s ease}
+@keyframes up{from{transform:translateY(24px);opacity:.6}to{transform:none;opacity:1}}
+.sheet h3{margin:0 0 4px;font-size:16px}
+.sheet .legend{color:var(--muted);font-size:12.5px;margin-bottom:12px}
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(42px,1fr));gap:8px}
+.cell{aspect-ratio:1;border:1.5px solid var(--line);border-radius:10px;background:#fbfdfe;font-size:13px;font-weight:600;color:#476173;display:grid;place-items:center}
+.cell.done{background:#d9f2ec;border-color:#8fd8c8;color:#0b6b58}
+.cell.cur{background:var(--brand);border-color:var(--brand);color:#fff}
+.cell.wrong{background:#ffe4e6;border-color:#fda4af;color:#be123c}
+
+/* ===== 结果 ===== */
+.result-hero{text-align:center;padding:22px 10px 6px}
+.ring{width:150px;height:150px;border-radius:50%;margin:0 auto 12px;display:grid;place-items:center;background:conic-gradient(var(--brand) 0deg,#dbe7ee 0deg);position:relative}
+.ring::before{content:"";position:absolute;inset:11px;background:#fff;border-radius:50%}
+.ring .val{position:relative;font-size:30px;font-weight:800;font-variant-numeric:tabular-nums}
+.ring .sub{position:relative;font-size:11.5px;color:var(--muted);margin-top:-4px}
+.result-hero h2{margin:0;font-size:19px}
+.result-hero p{margin:4px 0 0;color:var(--muted);font-size:13px}
+.bars{display:grid;gap:9px;margin-top:6px}
+.brow{display:grid;grid-template-columns:76px 1fr 66px;align-items:center;gap:10px;font-size:13px}
+.brow .track{height:9px;border-radius:99px;background:#e8eff3;overflow:hidden}
+.brow .track i{display:block;height:100%;border-radius:99px;background:var(--brand)}
+.brow .pct{text-align:right;color:var(--muted);font-variant-numeric:tabular-nums}
+.review{display:grid;gap:10px}
+.rv{border:1px solid var(--line);border-radius:13px;padding:12px 14px;background:#fbfdfe}
+.rv .h{font-size:14px;font-weight:600;margin-bottom:6px}
+.rv .line{font-size:13px;color:#475569}
+.rv .line.bad{color:#be123c}
+.rv .line.good{color:#15803d}
+.rv .ex{font-size:13px;color:#334155;margin-top:6px;background:#fff;border-left:3px solid #f1b34b;padding:7px 10px;border-radius:0 8px 8px 0}
+
+/* ===== 速记卡 ===== */
+.notes{display:grid;gap:10px}
+.note{display:grid;grid-template-columns:30px 1fr;gap:10px;background:#fbfdfe;border:1px solid var(--line);border-radius:12px;padding:11px 13px}
+.note .num{width:26px;height:26px;border-radius:8px;background:var(--grad);color:#fff;display:grid;place-items:center;font-size:12.5px;font-weight:700}
+.note b{font-size:14px}
+.note p{margin:2px 0 0;font-size:13.5px;color:#3c5568}
+
+/* ===== 问答 ===== */
+.qa-item{margin-top:14px}
+.qa-item .stem{font-size:15.5px;margin-bottom:10px}
+textarea{width:100%;min-height:96px;border:1.5px solid var(--line);border-radius:12px;padding:11px 13px;font-family:inherit;font-size:14px;line-height:1.7;resize:vertical;background:#fbfdfe;color:var(--ink)}
+textarea:focus{outline:none;border-color:#7fc9c0;background:#fff}
+.kws{display:flex;flex-wrap:wrap;gap:7px;margin-top:10px}
+.kw{border:1.5px dashed #cfe0e6;background:#fff;border-radius:999px;padding:4px 11px;font-size:12.5px;color:#476173}
+.kw.on{border-style:solid;border-color:var(--brand2);background:#e8fbf6;color:#0b6b58;font-weight:600}
+.ref{margin-top:10px;background:#f5fbfb;border-left:4px solid var(--brand2);border-radius:0 12px 12px 0;padding:12px 14px;font-size:14px;white-space:pre-wrap;display:none}
+.ref.on{display:block}
+.ref b{color:var(--brand)}
+
+/* ===== 其他 ===== */
+.empty{text-align:center;color:var(--muted);padding:26px 10px;font-size:14px}
+.footer{text-align:center;color:#8aa0ae;font-size:12px;margin-top:28px;line-height:1.8}
+.toast{position:fixed;left:50%;bottom:26px;transform:translate(-50%,20px);background:rgba(15,43,61,.94);color:#fff;padding:9px 16px;border-radius:999px;font-size:13px;z-index:99;opacity:0;transition:.25s;pointer-events:none;max-width:82vw;text-align:center}
+.toast.on{opacity:1;transform:translate(-50%,0)}
+.btns{display:flex;gap:10px;flex-wrap:wrap;margin-top:16px}
+.btns .iconbtn{padding:8px 15px;font-size:13.5px}
+@media (max-width:640px){
+  .app{padding:12px 11px 64px}
+  .topbar{margin:0 -11px;padding:8px 11px}
+  .hero{padding:18px 16px 16px;border-radius:18px}
+  .hero h1{font-size:20px}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .stem{font-size:15.5px}
+  .opt{font-size:14.5px;padding:11px 12px}
+  .brow{grid-template-columns:64px 1fr 58px;font-size:12.5px}
+  .card{padding:15px 14px}
+}
+</style>
+</head>
+<body>
+<div class="app">
+
+<!-- ================= 首页 ================= -->
+<section id="scr-home" class="screen active">
+  <div class="hero">
+    <h1>H 模块 · 模拟练习</h1>
+    <p>第十三届“广联达杯”BIM 毕业设计创新大赛 · BIM+城市更新低碳运维与智慧管控</p>
+    <div class="pills">
+      <span class="pill">题库 <b id="pill-total">0</b> 题</span>
+      <span class="pill">限时模拟 · 80 分钟</span>
+      <span class="pill">问答题卡 · 采分点自检</span>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><b id="st-answered">0</b><span>已练题数</span></div>
+    <div class="stat"><b id="st-acc">—</b><span>总正确率</span></div>
+    <div class="stat"><b id="st-wrong">0</b><span>错题本</span></div>
+    <div class="stat"><b id="st-mock">0</b><span>模拟考次数</span></div>
+  </div>
+
+  <div class="card">
+    <div class="sec-title"><h2>选择模式</h2><span class="tip">建议：早上限时模拟，晚上专项补漏</span></div>
+    <div class="modes">
+      <button class="mode" id="mode-exam">
+        <div class="ico">⏱</div>
+        <div class="txt"><b>整套限时模拟</b><small>50 单选 + 10 多选，80 分钟倒计时，交卷打分并逐题讲评</small></div>
+        <div class="go">开始 →</div>
+      </button>
+      <button class="mode" id="mode-practice">
+        <div class="ico">🎯</div>
+        <div class="txt"><b>分章节专项练</b><small>按考点模块刷题，做完一题即时判对错 + 解析</small></div>
+        <div class="go">进入 →</div>
+      </button>
+      <button class="mode" id="mode-qa">
+        <div class="ico">✍️</div>
+        <div class="txt"><b>问答题卡</b><small>情景简答，写完对照参考答案，按采分关键词自检打分</small></div>
+        <div class="go">去练 →</div>
+      </button>
+      <button class="mode" id="mode-wrong">
+        <div class="ico">📕</div>
+        <div class="txt"><b>错题本</b><small>自动收录错题，答对一次即从本子移除</small></div>
+        <div class="go">复习 →</div>
+      </button>
+      <button class="mode" id="mode-notes">
+        <div class="ico">🧠</div>
+        <div class="txt"><b>必背速记卡</b><small>18 张数字记忆卡，考前 10 分钟过一遍</small></div>
+        <div class="go">查看 →</div>
+      </button>
+    </div>
+  </div>
+
+  <div class="card">
+    <div class="sec-title"><h2>考试信息</h2></div>
+    <div class="notes">
+      <div class="note"><div class="num">1</div><div><b>理论答题（先拿这块）</b><p>校园赛在「建筑云课（院校版）」，约 80 分钟；全国海选 12 月上旬在「广联达数字考试平台」。第 12 届题型：单选 50 + 多选 10，共 60 道客观题；本届题型以官方通知为准。</p></div></div>
+      <div class="note"><div class="num">2</div><div><b>作品赛（后面做）</b><p>3–5 人团队，12 个交付文件，满分 100。案例必须是公共建筑、单体 ≥10000㎡、图纸早于 2022 年；任一文件出现校名校徽/队名/姓名，该项 0 分。</p></div></div>
+    </div>
+  </div>
+
+  <div class="footer">离线可用 · 数据存在本机浏览器 · 题目选项每次进入随机打乱</div>
+</section>
+
+<!-- ================= 专项选择 ================= -->
+<section id="scr-practice" class="screen">
+  <div class="card">
+    <div class="sec-title"><h2>分章节专项练</h2><button class="iconbtn" data-go="home">← 返回</button></div>
+    <p class="hint" style="margin-top:-4px">先选模块，再选题量。做完立即看解析。</p>
+    <div style="margin:14px 0 6px;font-size:13px;color:var(--muted)">题量</div>
+    <div class="chips" id="len-chips">
+      <button class="chip on" data-len="10">10 题</button>
+      <button class="chip" data-len="20">20 题</button>
+      <button class="chip" data-len="0">全部</button>
+    </div>
+    <div style="margin:16px 0 8px;font-size:13px;color:var(--muted)">模块</div>
+    <div class="modes" id="module-list"></div>
+  </div>
+</section>
+
+<!-- ================= 答题 ================= -->
+<section id="scr-quiz" class="screen">
+  <div class="topbar">
+    <div class="row">
+      <button class="iconbtn" id="btn-exit">退出</button>
+      <div class="bar"><i id="prog"></i></div>
+      <div class="timer" id="timer">80:00</div>
+      <button class="iconbtn" id="btn-sheet">答题卡</button>
+      <button class="iconbtn primary" id="btn-finish">交卷</button>
+    </div>
+  </div>
+  <div class="card" id="quiz-card"></div>
+</section>
+
+<!-- ================= 结果 ================= -->
+<section id="scr-result" class="screen"><div id="result-body"></div></section>
+
+<!-- ================= 问答 ================= -->
+<section id="scr-qa" class="screen">
+  <div class="card">
+    <div class="sec-title"><h2>问答题卡</h2><button class="iconbtn" data-go="home">← 返回</button></div>
+    <p class="hint">先自己写（能写多少写多少），再看参考答案，然后点中你写到的关键词——系统按采分点给你算覆盖率。写过的内容会自动保存。</p>
+    <div id="qa-wrap"></div>
+  </div>
+</section>
+
+<!-- ================= 错题本 ================= -->
+<section id="scr-wrong" class="screen">
+  <div class="card">
+    <div class="sec-title"><h2>错题本</h2><button class="iconbtn" data-go="home">← 返回</button></div>
+    <div id="wrong-wrap"></div>
+  </div>
+</section>
+
+<!-- ================= 速记 ================= -->
+<section id="scr-notes" class="screen">
+  <div class="card">
+    <div class="sec-title"><h2>必背速记卡</h2><button class="iconbtn" data-go="home">← 返回</button></div>
+    <div class="notes" id="notes-wrap"></div>
+  </div>
+</section>
+
+</div>
+
+<div class="sheet" id="sheet"><div class="panel">
+  <div style="display:flex;justify-content:space-between;align-items:center">
+    <h3>答题卡</h3><button class="iconbtn" id="sheet-close">收起</button>
+  </div>
+  <div class="legend" id="sheet-legend"></div>
+  <div class="grid" id="sheet-grid"></div>
+</div></div>
+<div class="toast" id="toast"></div>
+
+<script>
+/* ============================================================
+   题库（构建时注入）
+   ============================================================ */
+const RAW_BANK = [{"id":"s01","type":"single","module":"BIM基础","kp":"BIM定义","stem":"BIM 的中文含义是（　）。","options":["建筑信息模型","建筑施工模拟","建筑效果图","建筑造价软件"],"answer":[0],"explanation":"BIM 即建筑信息模型（Building Information Modeling/Model），以三维数字技术为基础集成工程项目各种相关信息，是数字化模型，不等于效果图或算量软件。","source":"模拟题·单选1","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s02","type":"single","module":"BIM基础","kp":"BIM五大特点","stem":"下列不属于 BIM 五大特点的是（　）。","options":["可视化","协调性","模拟性","自动施工"],"answer":[3],"explanation":"BIM 五大特点为可视化、协调性、模拟性、优化性、可出图性，不含“自动施工”；BIM 可辅助施工管理，但不能代替施工。","source":"模拟题·单选2","flag":"与多选第1题考点完全重复，建议删一题或改问“优化性”。","origin":"mock","tags":[],"difficulty":2},{"id":"s03","type":"single","module":"BIM基础","kp":"LOD","stem":"LOD 500 对应的阶段是（　）。","options":["概念设计阶段","方案设计阶段","施工阶段","竣工与运维阶段"],"answer":[3],"explanation":"LOD 100～500 信息深度递增：100 概念、200 方案、300 施工图、400 施工、500 竣工/运维。LOD 500 强调竣工实测信息与运维可用。","source":"模拟题·单选3","flag":"选项表述略模糊：LOD 400 对应施工阶段，本项“竣工与运维阶段”宜与“施工阶段”区分；答案D无误，建议将选项C改为“施工图设计阶段”。","origin":"mock","tags":[],"difficulty":2},{"id":"s04","type":"single","module":"BIM基础","kp":"IFC标准","stem":"IFC 标准的性质是（　）。","options":["一种建模软件","一种开放的数据交换标准","一种算量软件","一种渲染插件"],"answer":[1],"explanation":"IFC（Industry Foundation Classes）是开放的建筑数据交换标准，用于不同软件间信息互通，本身不是软件。","source":"模拟题·单选4","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s05","type":"single","module":"BIM基础","kp":"IFC发布组织","stem":"发布 IFC 标准的组织是（　）。","options":["ISO 国际标准化组织","buildingSMART","Autodesk 公司","广联达公司"],"answer":[1],"explanation":"IFC 由 buildingSMART（原 IAI）发布并维护，其内容亦对应 ISO 16739 标准体系。","source":"模拟题·单选5","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s06","type":"single","module":"BIM基础","kp":"碰撞检查","stem":"碰撞检查中的“硬碰撞”指的是（　）。","options":["实体构件直接相交","构件间距不满足要求","设备重量超限","图纸标注错误"],"answer":[0],"explanation":"硬碰撞是构件实体在空间上直接相交；间距不足、净空不够属于软碰撞（间隙碰撞），两者常配合检查。","source":"模拟题·单选6","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s07","type":"single","module":"BIM基础","kp":"BIM国标编号","stem":"《建筑信息模型应用统一标准》的编号是（　）。","options":["GB/T 51212","GB/T 51366","GB/T 50378","GB 50010"],"answer":[0],"explanation":"GB/T 51212 为《建筑信息模型应用统一标准》；GB/T 51366 是碳排放计算标准，GB/T 50378 是绿色建筑评价标准，GB 50010 是混凝土结构设计规范。","source":"模拟题·单选7","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s08","type":"single","module":"BIM基础","kp":"全生命周期应用","stem":"建筑全生命周期中，BIM 应用时间最长的阶段是（　）。","options":["设计阶段","施工阶段","运维阶段","拆除阶段"],"answer":[2],"explanation":"运维阶段可持续几十年，是全生命周期中历时最长、BIM 产生长期价值的阶段。","source":"模拟题·单选8","flag":"与单选第44题考点重复（运维阶段历时最长），建议改问角度或删一题。","origin":"mock","tags":[],"difficulty":2},{"id":"s09","type":"single","module":"BIM基础","kp":"BIM软件功能定位","stem":"Navisworks 的主要功能是（　）。","options":["二维施工图绘制","碰撞检查与施工模拟","钢筋工程量计算","结构内力计算"],"answer":[1],"explanation":"Navisworks 用于多专业模型整合、碰撞检查、4D 施工进度模拟与漫游审查；二维绘图用 CAD，结构计算用 PKPM/YJK 等。","source":"模拟题·单选9","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s10","type":"single","module":"BIM基础","kp":"数字孪生","stem":"关于数字孪生与 BIM 的关系，正确的是（　）。","options":["两者完全相同","BIM 提供静态基础数据，结合 IoT 实时数据形成数字孪生","数字孪生就是效果图渲染","数字孪生已取代图纸"],"answer":[1],"explanation":"数字孪生强调物理实体与虚拟模型的双向映射、实时同步；BIM 提供静态基础数据，叠加 IoT 实时数据后才成为孪生体。","source":"模拟题·单选10","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s11","type":"single","module":"BIM基础","kp":"CIM","stem":"CIM 指的是（　）。","options":["施工信息模型","城市信息模型","造价信息模型","运维管理手册"],"answer":[1],"explanation":"CIM 即城市信息模型（City Information Model），在 BIM＋GIS 基础上扩展到城市尺度，是智慧城市的数据底座。","source":"模拟题·单选11","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s12","type":"single","module":"BIM基础","kp":"BIM模拟性","stem":"下列属于 BIM“模拟性”应用的是（　）。","options":["三维漫游浏览","能耗模拟与施工进度模拟","输出施工图纸","统计工程量"],"answer":[1],"explanation":"模拟性指在设计、施工、运维阶段做节能、日照、疏散、施工进度等模拟分析；漫游属可视化，出图属可出图性，算量属优化/算量应用。","source":"模拟题·单选12","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s13","type":"single","module":"碳排放","kp":"双碳目标","stem":"我国提出的碳达峰目标年份是（　）。","options":["2025 年","2030 年","2040 年","2060 年"],"answer":[1],"explanation":"我国力争 2030 年前实现碳达峰、2060 年前实现碳中和，即“双碳”目标，注意“前”字与年份不要写反。","source":"模拟题·单选13","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s14","type":"single","module":"碳排放","kp":"双碳目标","stem":"我国提出的碳中和目标年份是（　）。","options":["2030 年","2045 年","2050 年","2060 年"],"answer":[3],"explanation":"碳中和目标为 2060 年前；2030 年前是碳达峰。两者成对记忆，避免写反。","source":"模拟题·单选14","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s15","type":"single","module":"碳排放","kp":"建筑碳排放计算标准","stem":"《建筑碳排放计算标准》的编号是（　）。","options":["GB/T 50378","GB/T 51212","GB/T 51366","GB/T 50001"],"answer":[2],"explanation":"GB/T 51366-2019《建筑碳排放计算标准》，规定建材生产与运输、建造、运行、拆除四阶段的碳排放计算方法。","source":"模拟题·单选15","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s16","type":"single","module":"碳排放","kp":"碳排放核算阶段","stem":"下列不属于建筑碳排放核算阶段的是（　）。","options":["建材生产与运输阶段","建造阶段","运行阶段","规划选址阶段"],"answer":[3],"explanation":"GB/T 51366 将建筑碳排放划分为建材生产与运输、建造、运行、拆除四个阶段；规划选址不属于碳核算阶段划分。","source":"模拟题·单选16","flag":"与多选第2题考点重复（碳排放四阶段）。","origin":"mock","tags":[],"difficulty":2},{"id":"s17","type":"single","module":"碳排放","kp":"碳排放构成","stem":"建筑全过程碳排放中，占比最大的阶段是（　）。","options":["建材生产阶段","建造阶段","运行阶段","拆除阶段"],"answer":[2],"explanation":"按本次比赛提纲口径，全过程碳排放中运行阶段占比最大；行业报告另有建材生产占比更高的口径，属数据口径差异，考试以官方口径为准。","source":"模拟题·单选17","flag":"口径差异，待核对。","origin":"mock","tags":[],"difficulty":2},{"id":"s18","type":"single","module":"碳排放","kp":"排放因子法","stem":"排放因子法的计算公式是（　）。","options":["碳排放量＝活动数据×碳排放因子","碳排放量＝活动数据＋碳排放因子","碳排放量＝碳排放因子÷活动数据","碳排放量＝建筑面积×层高"],"answer":[0],"explanation":"排放因子法：碳排放量＝活动数据×排放因子（如用电量 kWh×电力排放因子 kgCO₂/kWh），是碳核算最基础、最常用的方法。","source":"模拟题·单选18","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s19","type":"single","module":"碳排放","kp":"排放因子法计算","stem":"某建筑年用电量 10 万 kWh，题目给定电力碳排放因子 0.6 kgCO₂/kWh，则其年用电碳排放约为（　）。","options":["6 t","60 t","600 t","0.6 t"],"answer":[1],"explanation":"100000 kWh×0.6 kgCO₂/kWh＝60000 kg＝60 t。注意单位换算：1 t＝1000 kg。","source":"模拟题·单选19","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s20","type":"single","module":"碳排放","kp":"绿色建筑评价标准","stem":"《绿色建筑评价标准》的编号是（　）。","options":["GB/T 51212","GB/T 50378","GB/T 51366","GB/T 51235"],"answer":[1],"explanation":"GB/T 50378-2019《绿色建筑评价标准》；GB/T 51212 是 BIM 应用统一标准，GB/T 51366 是建筑碳排放计算标准，GB/T 51235 是 BIM 施工应用标准。","source":"模拟题·单选20","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s21","type":"single","module":"碳排放","kp":"绿色建筑等级","stem":"绿色建筑评价的最高等级是（　）。","options":["一星级","二星级","三星级","四星级"],"answer":[2],"explanation":"绿建等级由低到高为基本级、一星级、二星级、三星级，最高为三星级，没有四星级。","source":"模拟题·单选21","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s22","type":"single","module":"碳排放","kp":"绿色建筑评价指标","stem":"下列不属于绿色建筑评价五大指标类的是（　）。","options":["安全耐久","健康舒适","造价最低","资源节约"],"answer":[2],"explanation":"五大指标类为安全耐久、健康舒适、生活便利、资源节约、环境宜居；“造价最低”不是评价指标。","source":"模拟题·单选22","flag":"与多选第3题考点重复（绿建五大指标）。","origin":"mock","tags":[],"difficulty":2},{"id":"s23","type":"single","module":"碳排放","kp":"建筑碳排放行业数据","stem":"根据《中国建筑能耗研究报告》（行业常用口径，2020 版报告），建筑全过程碳排放约占全国碳排放总量的（　）。","options":["约 10%","约 30%","约 50%","约 90%"],"answer":[2],"explanation":"该报告口径下，建筑全过程能耗约占全国能源消费总量 45% 上下，碳排放约占全国碳排放总量 50% 上下，两个数不要记反。","source":"模拟题·单选23","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s24","type":"single","module":"碳排放","kp":"既有建筑改造减碳","stem":"既有建筑改造再利用有利于减碳，主要是因为（　）。","options":["改造不需要任何材料","避免了拆除重建产生的大量建材与建造碳排放","改造后建筑面积变大","改造可以不做节能设计"],"answer":[1],"explanation":"拆除重建会产生大量建材生产与建造碳排放；改造保留主体结构，避免了这部分“隐含碳”，是城市更新优于大拆大建的核心逻辑。","source":"模拟题·单选24","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s25","type":"single","module":"能耗模拟","kp":"体形系数","stem":"建筑体形系数的定义是（　）。","options":["外表面积与其所包围体积之比","体积与外表面积之比","窗墙面积之比","建筑高度与宽度之比"],"answer":[0],"explanation":"体形系数＝与室外大气接触的外表面积÷所包围的体积，反映建筑散热面大小；选项中体积/外表面积是它的倒数，别记反。","source":"模拟题·单选25","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s26","type":"single","module":"能耗模拟","kp":"体形系数影响","stem":"体形系数对建筑节能的影响是（　）。","options":["越大越节能","越大越不利于节能","没有影响","只影响采光"],"answer":[1],"explanation":"体形系数越大，单位体积对应的散热外表面积越大，冬季热损失越多，越不利于节能；严寒、寒冷地区对它有上限要求。","source":"模拟题·单选26","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s27","type":"single","module":"能耗模拟","kp":"传热系数K值","stem":"围护结构传热系数 K 值越小，说明（　）。","options":["保温性能越好","保温性能越差","采光越好","通风越好"],"answer":[0],"explanation":"K 值表示单位温差下单位面积传递的热量，K 值越小传热越慢，保温隔热性能越好。外墙、屋面、外窗是三大围护部位。","source":"模拟题·单选27","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s28","type":"single","module":"能耗模拟","kp":"建筑能耗构成","stem":"公共建筑运行能耗中，通常占比最大的是（　）。","options":["空调与采暖能耗","照明能耗","电梯能耗","给排水能耗"],"answer":[0],"explanation":"公共建筑运行能耗中，空调与采暖通常占一半上下，是节能改造和运维调适的重点对象。","source":"模拟题·单选28","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s29","type":"single","module":"能耗模拟","kp":"分项计量","stem":"电量分项计量中，下列不属于四类分项的是（　）。","options":["照明插座用电","空调用电","动力用电","绿化灌溉用电"],"answer":[3],"explanation":"大型公建电量分项计量分四类：照明插座、空调、动力、特殊用电；绿化灌溉不属于这四类固定分项。","source":"模拟题·单选29","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s30","type":"single","module":"能耗模拟","kp":"能耗模拟软件","stem":"建筑能耗模拟软件 DeST 的开发单位是（　）。","options":["美国能源部","清华大学","广联达公司","同济大学"],"answer":[1],"explanation":"DeST 由清华大学建筑技术科学系开发，是国产建筑环境与能耗模拟软件；EnergyPlus 才是美国能源部支持开发的。","source":"模拟题·单选30","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s31","type":"single","module":"能耗模拟","kp":"能耗模拟软件","stem":"EnergyPlus 软件的来源是（　）。","options":["美国能源部支持开发","清华大学开发","日本建筑研究所开发","广联达公司开发"],"answer":[0],"explanation":"EnergyPlus 由美国能源部（DOE）支持开发，是国际通用的能耗模拟内核；DeST 为清华大学开发，注意别记混。","source":"模拟题·单选31","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s32","type":"single","module":"能耗模拟","kp":"合同能源管理","stem":"合同能源管理（EMC）的基本模式是（　）。","options":["业主自行投资改造","节能服务公司投资改造并按节能收益分享","政府全额补贴改造","物业公司义务改造"],"answer":[1],"explanation":"EMC 由节能服务公司出资改造，用节省的能源费用回收投资并分享收益，业主可零投资或少投资，是既有建筑节能改造常用模式。","source":"模拟题·单选32","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s33","type":"single","module":"能耗模拟","kp":"窗墙面积比","stem":"窗墙面积比过大带来的主要问题是（　）。","options":["不利于保温隔热，能耗升高","结构不安全","无法开窗通风","造价必然降低"],"answer":[0],"explanation":"外窗是围护结构保温的薄弱环节，窗墙面积比过大导致冬夏冷热损失增加、能耗升高；它主要影响热工性能而非结构安全。","source":"模拟题·单选33","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s34","type":"single","module":"能耗模拟","kp":"热桥","stem":"围护结构中的“热桥”（冷热桥）指的是（　）。","options":["传热能力明显强于周边部位的局部区域","连接两栋建筑的桥","供暖管道的桥架","一种新型保温材料"],"answer":[0],"explanation":"热桥是围护结构中传热能力明显强于周边部位的局部区域（如梁柱、窗过梁、阳台板），热量集中流失且易结露，是节能薄弱点。","source":"模拟题·单选34","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s35","type":"single","module":"能耗模拟","kp":"能耗模拟用途","stem":"下列不属于能耗模拟用途的是（　）。","options":["设计方案能耗比选","节能率测算","结构承载力验算","绿色建筑达标预评估"],"answer":[2],"explanation":"能耗模拟用于方案比选、节能率测算、绿建达标预评估等；结构承载力验算属于结构计算，用 PKPM/YJK 等结构软件。","source":"模拟题·单选35","flag":"与多选第9题考点重复（能耗模拟用途）。","origin":"mock","tags":[],"difficulty":2},{"id":"s36","type":"single","module":"能耗模拟","kp":"运行调适","stem":"“运行调适”降低能耗的主要手段是（　）。","options":["更换全部设备","优化设备运行参数与控制策略","重新设计建筑外形","拆除重建"],"answer":[1],"explanation":"运行调适（调试）不靠大拆大换，而是通过优化运行参数、控制策略、设备启停时序等挖掘节能潜力，属于低成本运维节能手段。","source":"模拟题·单选36","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s37","type":"single","module":"低碳运维","kp":"运维BIM模型信息","stem":"运维 BIM 模型除几何信息外，最重要的静态信息是（　）。","options":["渲染材质","设备台账信息","施工照片","销售价格"],"answer":[1],"explanation":"运维模型要在几何模型上补充设备台账（名称、型号、厂家、安装时间、保修期等）静态信息，再接入传感器动态数据，才能支撑运维。","source":"模拟题·单选37","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s38","type":"single","module":"低碳运维","kp":"楼宇自控BAS","stem":"楼宇自控系统（BAS）一般不监控（　）。","options":["暖通空调系统","给排水系统","食堂菜单系统","供配电与照明系统"],"answer":[2],"explanation":"BAS 集中监控暖通空调、给排水、供配电、照明、电梯等机电系统；食堂菜单属于餐饮业务管理，不属于楼控范围。","source":"模拟题·单选38","flag":"与多选第5题考点重复（BAS监控对象）；干扰项“食堂菜单”过于荒谬，属送分。","origin":"mock","tags":[],"difficulty":2},{"id":"s39","type":"single","module":"低碳运维","kp":"DDC","stem":"DDC 的含义是（　）。","options":["直接数字控制器","数据传输电缆","数字孪生平台","能耗监测终端"],"answer":[0],"explanation":"DDC（Direct Digital Controller）是楼宇自控的现场级直接数字控制器，采集传感器信号并控制执行器，是 BAS 的底层控制单元。","source":"模拟题·单选39","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s40","type":"single","module":"低碳运维","kp":"预测性维护","stem":"预测性维护的决策依据是（　）。","options":["设备状态监测数据","固定时间周期","设备发生故障之后","维修人员经验"],"answer":[0],"explanation":"预测性维护依据状态监测与趋势分析预测故障，在故障前安排维修；固定周期是定期维护，故障后维修是事后维修，三者要分清。","source":"模拟题·单选40","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s41","type":"single","module":"低碳运维","kp":"老旧小区改造分类","stem":"城镇老旧小区改造中，小区内建筑节能改造属于（　）。","options":["基础类","完善类","提升类","拆除类"],"answer":[1],"explanation":"老旧小区改造分基础类、完善类、提升类三类；建筑节能改造、加装电梯、停车充电等属完善类，养老托育助餐等属提升类。","source":"模拟题·单选41","flag":"与多选第8题考点重复（老旧小区改造三类）。","origin":"mock","tags":[],"difficulty":2},{"id":"s42","type":"single","module":"低碳运维","kp":"智慧运维闭环","stem":"智慧运维闭环的正确顺序是（　）。","options":["监测→报警→派单→处置→复核","派单→监测→报警→复核→处置","报警→复核→监测→处置→派单","处置→监测→派单→报警→复核"],"answer":[0],"explanation":"智慧运维闭环为：感知监测→异常报警→生成工单派单→现场处置→复核销项，与“感知—诊断—处置”逻辑一致。","source":"模拟题·单选42","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s43","type":"single","module":"低碳运维","kp":"BACnet协议","stem":"BACnet 是（　）。","options":["一种建模软件","楼宇自控系统通信协议","一种碳排放因子","一种保温材料"],"answer":[1],"explanation":"BACnet 是楼宇自控领域的开放通信协议，与 Modbus 同为 BAS 常用协议，用于不同厂商设备间的数据互通。","source":"模拟题·单选43","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s44","type":"single","module":"低碳运维","kp":"运维阶段价值","stem":"关于建筑运维阶段，正确的说法是（　）。","options":["运维阶段历时在全生命周期中最长","运维成本在总成本中可以忽略","运维阶段不需要信息模型","运维与节能无关"],"answer":[0],"explanation":"运维阶段持续几十年，历时最长、成本占比高，且与节能降碳直接相关，因此“低碳运维”成为独立考点。","source":"模拟题·单选44","flag":"与单选第8题考点重复（运维阶段历时最长）。","origin":"mock","tags":[],"difficulty":2},{"id":"s45","type":"single","module":"低碳运维","kp":"新风按需控制","stem":"新风系统按需控制常联动的室内参数是（　）。","options":["CO₂浓度","室内噪声","墙面颜色","楼层高度"],"answer":[0],"explanation":"按需通风（DCV）常用 CO₂ 浓度反映人员密度与空气品质，据此调节新风量，在保证空气品质的同时降低新风能耗。","source":"模拟题·单选45","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s46","type":"single","module":"低碳运维","kp":"设施管理FM","stem":"设施管理（FM）一般不包括（　）。","options":["空间管理","资产管理","结构方案设计","应急管理"],"answer":[2],"explanation":"FM 的典型功能包括空间管理、资产管理、设备维护维修、应急管理、能耗管理；结构方案设计属于设计阶段工作。","source":"模拟题·单选46","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s47","type":"single","module":"识图与管理","kp":"综合单价","stem":"工程量清单综合单价的构成中，不包括（　）。","options":["人工费","材料费","企业管理费","土地出让金"],"answer":[3],"explanation":"综合单价＝人工费＋材料费＋机械费＋企业管理费＋利润，并考虑风险；土地出让金属于土地取得成本，不在综合单价内。","source":"模拟题·单选47","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s48","type":"single","module":"识图与管理","kp":"关键线路","stem":"网络计划中，关键线路是指（　）。","options":["持续时间最长的线路","持续时间最短的线路","工作数量最多的线路","造价最高的线路"],"answer":[0],"explanation":"关键线路是总持续时间最长的线路，决定总工期；线路上工作均为关键工作，其延误将直接拖延工期。","source":"模拟题·单选48","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s49","type":"single","module":"识图与管理","kp":"招标方式","stem":"邀请招标的特点是（　）。","options":["以公告形式邀请不特定投标人","向特定法人或其他组织发出投标邀请书","不需要编制招标文件","只能有一家投标人"],"answer":[1],"explanation":"邀请招标向三个以上特定法人或其他组织发出投标邀请书；以公告邀请不特定对象的是公开招标。","source":"模拟题·单选49","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"s50","type":"single","module":"识图与管理","kp":"建筑制图轴号","stem":"建筑图中，纵向定位轴线的编号一般采用（　）。","options":["阿拉伯数字","大写拉丁字母","小写拉丁字母","罗马数字"],"answer":[1],"explanation":"定位轴线横向（自左向右）用阿拉伯数字 1、2、3…编号，纵向（自下向上）用大写拉丁字母 A、B、C…编号（I、O、Z 一般不用）。","source":"模拟题·单选50","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"m01","type":"multi","module":"BIM基础","kp":"BIM五大特点","stem":"BIM 的特点包括（　）。","options":["可视化","协调性","可自动算量","模拟性"],"answer":[0,1,3],"explanation":"BIM 五大特点为可视化、协调性、模拟性、优化性、可出图性，A、B、D 正确；C“可自动算量”错在把算量软件功能当成 BIM 特点，BIM 模型可用于算量但需专业软件配合，并非自动。","source":"模拟题·多选1","flag":"与单选第2题考点重复，建议删一题。","origin":"mock","tags":[],"difficulty":2},{"id":"m02","type":"multi","module":"碳排放","kp":"碳排放核算阶段","stem":"建筑碳排放核算的阶段包括（　）。","options":["建材生产与运输阶段","建造阶段","运行阶段","拆除阶段"],"answer":[0,1,2,3],"explanation":"GB/T 51366-2019 将建筑碳排放划分为建材生产与运输、建造、运行、拆除四个阶段，四项全对。","source":"模拟题·多选2","flag":"原答案ABC有误，应为ABCD：GB/T 51366-2019 的核算阶段含“拆除阶段”，选项D也正确；单选第16题亦以拆除为正确阶段、解析也写“全选”，答案漏了D。","origin":"mock","tags":[],"difficulty":2},{"id":"m03","type":"multi","module":"碳排放","kp":"绿色建筑评价指标","stem":"绿色建筑评价指标类包括（　）。","options":["安全耐久","智能便捷","健康舒适","环境宜居"],"answer":[0,2,3],"explanation":"绿建五大指标类为安全耐久、健康舒适、生活便利、资源节约、环境宜居，A、C、D 正确；B“智能便捷”不是指标类名称，智能服务属“生活便利”下的条文，易混淆。","source":"模拟题·多选3","flag":"与单选第22题考点重复。","origin":"mock","tags":[],"difficulty":2},{"id":"m04","type":"multi","module":"低碳运维","kp":"智慧运维平台功能","stem":"智慧运维平台的典型功能包括（　）。","options":["设备台账管理","能耗监测","工单管理","施工进度模拟"],"answer":[0,1,2],"explanation":"智慧运维平台典型功能有设备台账、能耗监测、工单/报修管理、空间资产与应急管理等，A、B、C 正确；D“施工进度模拟”属施工阶段应用，不是运维平台功能。","source":"模拟题·多选4","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"m05","type":"multi","module":"低碳运维","kp":"BAS监控子系统","stem":"楼宇自控系统可监控的子系统包括（　）。","options":["消防联动控制","暖通空调","给排水","供配电"],"answer":[1,2,3],"explanation":"按提纲口径，BAS 监控暖通空调、给排水、供配电、照明、电梯等机电系统，B、C、D 正确；A“消防联动控制”属独立消防报警系统（FAS），BAS 一般只做接口监视，不计入监控子系统。","source":"模拟题·多选5","flag":"与单选第38题考点重复。","origin":"mock","tags":[],"difficulty":2},{"id":"m06","type":"multi","module":"碳排放","kp":"减碳设计手段","stem":"有利于建筑减碳的设计手段有（　）。","options":["优化朝向与外遮阳","大面积采用玻璃幕墙","提高围护结构保温性能","加大新风量以改善室内空气品质"],"answer":[0,2],"explanation":"减碳遵循“被动优先→设备高效→可再生能源”：优化朝向遮阳、提高保温是减碳手段，A、C 正确；B“大面积玻璃幕墙”增大窗墙比不利于保温隔热；D“加大新风量”增加新风负荷与能耗，应改为按需控制，故 B、D 错。","source":"模拟题·多选6","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"m07","type":"multi","module":"低碳运维","kp":"运维模型设备信息","stem":"运维模型中应包含的设备信息有（　）。","options":["设备型号","生产厂家","设备采购单价","设备保修期限"],"answer":[0,1,3],"explanation":"运维模型设备台账含名称、型号、厂家、安装时间、保修期等静态信息，A、B、D 正确；C“设备采购单价”属财务/造价信息，不是运维模型必需的设备台账信息。","source":"模拟题·多选7","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"m08","type":"multi","module":"低碳运维","kp":"老旧小区改造分类","stem":"城镇老旧小区改造内容分为（　）。","options":["拆除重建类","基础类","完善类","提升类"],"answer":[1,2,3],"explanation":"老旧小区改造分基础类、完善类、提升类三类，B、C、D 正确；A“拆除重建类”是城市更新方式（拆除重建/综合整治等）的分类用语，不是老旧小区改造的三类内容。","source":"模拟题·多选8","flag":"与单选第41题重复，建议保留多选、单选改角度。","origin":"mock","tags":[],"difficulty":2},{"id":"m09","type":"multi","module":"能耗模拟","kp":"能耗模拟用途","stem":"建筑能耗模拟可用于（　）。","options":["设计方案能耗比选","空调水系统水力平衡计算","绿色建筑达标预评估","工程量清单编制"],"answer":[0,2],"explanation":"能耗模拟用于方案能耗比选、节能率测算、绿建达标预评估等，A、C 正确；B“水力平衡计算”属暖通水力计算，D“清单编制”属造价工作，均不是能耗模拟用途。","source":"模拟题·多选9","flag":"与单选第35题考点重复。","origin":"mock","tags":[],"difficulty":2},{"id":"m10","type":"multi","module":"低碳运维","kp":"智慧管控感知层","stem":"下列属于智慧管控感知层设备的有（　）。","options":["监控大屏","温湿度传感器","数据服务器","智能电表"],"answer":[1,3],"explanation":"感知层由传感器与计量表具构成，B“温湿度传感器”、D“智能电表”正确；A“监控大屏”属展示层，C“数据服务器”属平台/数据层，均不是感知层设备。","source":"模拟题·多选10","flag":"","origin":"mock","tags":[],"difficulty":2},{"id":"b01","type":"single","module":"BIM基础","kp":"BIM定义","stem":"下列关于 BIM 本质的说法，正确的是（　）。","options":["BIM 就是 Revit 等三维建模软件的统称","BIM 是集成工程项目各种相关信息的工程数据模型","BIM 只用于设计阶段制作三维效果图","BIM 能够自动完成施工，不需要人工干预"],"answer":[1],"explanation":"BIM 是信息模型而非软件，覆盖规划到运维全过程，也不能自动施工；A 把工具当模型，是常见混淆。","difficulty":1,"tags":["BIM基础","概念辨析"],"source":"自编新题","origin":"plus","flag":""},{"id":"b02","type":"single","module":"BIM基础","kp":"BIM五大特点-可视化","stem":"BIM 的“可视化”最准确的含义是（　）。","options":["把模型渲染成照片级效果图","在屏幕上用彩色线条显示图纸","构件与专业信息以三维直观方式呈现，便于各方沟通","把纸质图纸扫描成电子文件"],"answer":[2],"explanation":"可视化是信息的三维直观表达，不等于效果图渲染（易错点）；彩色线条、图纸扫描都不含模型信息。","difficulty":2,"tags":["BIM基础","易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"b03","type":"single","module":"BIM基础","kp":"BIM五大特点-协调性","stem":"设计阶段用 BIM 检查出结构梁与机电管线相碰并提前调整，主要体现 BIM 的（　）。","options":["协调性","可视化","模拟性","优化性"],"answer":[0],"explanation":"协调性解决各专业“打架”和碰撞问题；可视化只管看得见，模拟性重在过程推演，优化性偏方案比选。","difficulty":1,"tags":["BIM基础","五大特点"],"source":"自编新题","origin":"plus","flag":""},{"id":"b04","type":"single","module":"BIM基础","kp":"BIM五大特点-模拟性","stem":"下列不属于 BIM“模拟性”应用的是（　）。","options":["4D 施工进度模拟","火灾疏散模拟","场地日照与能耗模拟","自动编制工程结算书"],"answer":[3],"explanation":"模拟性针对施工、能耗、日照、疏散等过程推演；结算书属于造价计量工作，不靠模拟生成。","difficulty":2,"tags":["BIM基础","五大特点"],"source":"自编新题","origin":"plus","flag":""},{"id":"b05","type":"single","module":"BIM基础","kp":"全生命周期应用","stem":"在建筑运维阶段，BIM 模型的典型应用是（　）。","options":["钢筋翻样与下料","场地土方平衡计算","设备台账查询与维修工单管理","结构配筋计算"],"answer":[2],"explanation":"运维阶段用的核心是设备台账、维修与空间管理；钢筋翻样、土方、配筋计算都属于设计施工阶段。","difficulty":2,"tags":["BIM基础","全生命周期"],"source":"自编新题","origin":"plus","flag":""},{"id":"b06","type":"single","module":"BIM基础","kp":"LOD","stem":"关于 LOD（模型发展程度），说法正确的是（　）。","options":["LOD 数字越小，模型信息深度越高","LOD 数字越大，模型信息深度越高","LOD 只表示模型的外观颜色","LOD 等级与模型用途无关"],"answer":[1],"explanation":"LOD 从 100 到 500 数字越大信息越深；LOD500 对应竣工运维模型，数字方向别记反。","difficulty":1,"tags":["BIM基础","数字记忆"],"source":"自编新题","origin":"plus","flag":""},{"id":"b07","type":"single","module":"BIM基础","kp":"LOD","stem":"LOD 500 的模型通常对应项目的（　）。","options":["概念设计阶段","方案设计阶段","施工图设计阶段","竣工与运维阶段"],"answer":[3],"explanation":"LOD500 是信息最深的等级，对应竣工模型，可直接用于运维；前三个阶段的模型等级都低于 500。","difficulty":1,"tags":["BIM基础","数字记忆"],"source":"自编新题","origin":"plus","flag":""},{"id":"b08","type":"single","module":"BIM基础","kp":"IFC","stem":"设计用 Revit 建模、造价用广联达算量，要让两套软件互相读取模型，通常借助（　）。","options":["DWG 图纸文件","PDF 打印文件","IFC 格式文件","JPG 截图文件"],"answer":[2],"explanation":"IFC 是 buildingSMART 发布的开放交换标准，专解不同软件互通；DWG、PDF、JPG 都不承载完整模型信息。","difficulty":2,"tags":["BIM基础","数据标准"],"source":"自编新题","origin":"plus","flag":""},{"id":"b09","type":"single","module":"BIM基础","kp":"碰撞检查","stem":"管线综合时发现风管与消防水管实体没有相交，但间距太小、保温层装不下，这属于（　）。","options":["软碰撞","硬碰撞","逻辑碰撞","不属于碰撞"],"answer":[0],"explanation":"硬碰撞是实体相交，间距不足是软碰撞；题干已说没相交，所以不能选硬碰撞，这是常见易错点。","difficulty":2,"tags":["BIM基础","易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"b10","type":"single","module":"BIM基础","kp":"常用国标编号","stem":"下列标准编号与标准名称对应正确的是（　）。","options":["GB/T 51301—《建筑信息模型应用统一标准》","GB/T 51269—《建筑信息模型施工应用标准》","GB/T 51235—《建筑信息模型分类和编码标准》","GB/T 51212—《建筑信息模型应用统一标准》"],"answer":[3],"explanation":"51212 是应用统一标准，51235 是施工应用，51301 是设计交付，51269 是分类和编码，四者容易张冠李戴。","difficulty":2,"tags":["BIM基础","国标编号"],"source":"自编新题","origin":"plus","flag":""},{"id":"b11","type":"single","module":"BIM基础","kp":"数字孪生","stem":"数字孪生区别于普通 BIM 模型的核心特征是（　）。","options":["只需要一个三维模型文件","物理实体与虚拟模型双向映射、实时同步","只能用于设计阶段","本质就是一张效果图"],"answer":[1],"explanation":"孪生要双向、实时：BIM 提供静态基础数据，还需 IoT 实时数据注入；单向三维展示只是模型，不是孪生。","difficulty":1,"tags":["BIM基础","概念辨析"],"source":"自编新题","origin":"plus","flag":""},{"id":"b12","type":"single","module":"BIM基础","kp":"CIM","stem":"CIM（城市信息模型）是在什么基础上扩展到城市尺度的（　）。","options":["BIM＋GIS","CAD＋OFD","BIM＋Excel","GPS＋遥感影像"],"answer":[0],"explanation":"CIM 由 BIM 与 GIS 融合扩展到城市尺度；单靠 CAD、表格或遥感影像都构不成城市级信息模型。","difficulty":1,"tags":["BIM基础","概念辨析"],"source":"自编新题","origin":"plus","flag":""},{"id":"b13","type":"single","module":"识图与管理","kp":"五大专业图纸","stem":"下列图纸中，属于结构专业施工图的是（　）。","options":["梁板配筋图","给水平面图","照明平面图","风管平面图"],"answer":[0],"explanation":"配筋图反映钢筋混凝土构件，属结构专业；给水属给排水、照明属电气、风管属暖通，按专业对号入座。","difficulty":1,"tags":["识图","专业分类"],"source":"自编新题","origin":"plus","flag":""},{"id":"b14","type":"single","module":"识图与管理","kp":"标高","stem":"建筑图中标注的标高数值（如 3.600），其单位是（　）。","options":["毫米","厘米","米","千米"],"answer":[2],"explanation":"标高以米为单位、一般保留三位小数，3.600 即高出基准 3.6 米；写成毫米或厘米就放大了 1000 或 100 倍。","difficulty":1,"tags":["识图","常识"],"source":"自编新题","origin":"plus","flag":""},{"id":"b15","type":"single","module":"识图与管理","kp":"轴号","stem":"建筑平面图中，横向定位轴线的编号顺序是（　）。","options":["自下向上用大写拉丁字母","自右向左用阿拉伯数字","自左向右用大写拉丁字母","自左向右用阿拉伯数字 1、2、3……"],"answer":[3],"explanation":"横向轴线用阿拉伯数字自左向右编，纵向用大写拉丁字母自下向上编；题目问横向，别和纵向记反。","difficulty":2,"tags":["识图","易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"b16","type":"single","module":"识图与管理","kp":"招投标","stem":"公开招标与邀请招标的主要区别是（　）。","options":["是否需要评标","是否需要签订施工合同","邀请对象是否特定：公开招标以公告邀请不特定对象，邀请招标向特定对象发邀请书","是否必须编制招标文件"],"answer":[2],"explanation":"两种方式都要评标、签合同、编招标文件，核心差别只在邀请对象是否特定，以及是否公开发布公告。","difficulty":2,"tags":["项目管理","招投标"],"source":"自编新题","origin":"plus","flag":""},{"id":"b17","type":"single","module":"识图与管理","kp":"合同价形式","stem":"工程量清单计价模式下，最常用的合同价形式是（　）。","options":["固定总价合同","单价合同","成本加酬金合同","固定费率合同"],"answer":[1],"explanation":"清单计价按实际完成工程量×合同单价结算，所以多用单价合同；总价合同适合工程量明确的项目，成本加酬金较少用。","difficulty":2,"tags":["项目管理","合同"],"source":"自编新题","origin":"plus","flag":""},{"id":"b18","type":"single","module":"识图与管理","kp":"流水施工","stem":"与依次施工相比，流水施工的主要优点是（　）。","options":["工期更长，便于管理","各专业队连续作业，工期较短且资源投入均衡","不需要编制施工进度计划","工程造价一定最低"],"answer":[1],"explanation":"流水施工让工作面与专业队连续衔接，缩短工期、资源均衡；它仍要进度计划，也不保证造价最低。","difficulty":2,"tags":["项目管理","进度"],"source":"自编新题","origin":"plus","flag":""},{"id":"b19","type":"single","module":"识图与管理","kp":"网络计划与关键线路","stem":"网络计划中，关键线路上的工作（　）。","options":["总时差为零（或最小），不能随意延误","自由时差最大","持续时间最短","可以任意拖延而不影响工期"],"answer":[0],"explanation":"关键线路决定总工期，其上工作总时差最小、一旦延误就直接拖期；自由时差最大、持续时间最短都是干扰项。","difficulty":2,"tags":["项目管理","进度"],"source":"自编新题","origin":"plus","flag":""},{"id":"b20","type":"single","module":"识图与管理","kp":"工程量清单与综合单价","stem":"工程量清单中，分部分项工程的综合单价应包含（　）。","options":["仅人工费和材料费","人工费、材料费、机械费、企业管理费和利润","直接费、规费和税金","只包含风险费用"],"answer":[1],"explanation":"综合单价＝人、材、机＋管理费＋利润（并考虑一定风险）；规费和税金在清单计价中单列，不并入综合单价。","difficulty":2,"tags":["项目管理","计价"],"source":"自编新题","origin":"plus","flag":""},{"id":"b21","type":"multi","module":"BIM基础","kp":"全生命周期应用","stem":"下列属于 BIM 在施工阶段典型应用的有（　）。","options":["设备维修工单派发","4D 施工进度模拟","施工场地布置","机电管线综合与碰撞检查"],"answer":[1,2,3],"explanation":"进度模拟、场地布置、管线综合都发生在施工阶段；维修工单派发属于运维阶段，容易混入。","difficulty":2,"tags":["BIM基础","全生命周期"],"source":"自编新题","origin":"plus","flag":""},{"id":"b22","type":"multi","module":"BIM基础","kp":"软件定位与IFC","stem":"关于 BIM 软件与数据标准，下列说法正确的有（　）。","options":["广联达系列软件可用于算量、施工与运维管理","广联达系列是唯一的 BIM 建模软件","IFC 是 buildingSMART 发布的开放数据交换标准","Navisworks 常用于模型整合、碰撞检查与施工模拟"],"answer":[0,2,3],"explanation":"B 错在“唯一”，BIM 建模软件还有 Revit 等多种；IFC 是交换标准，Navisworks 主打碰撞与模拟。","difficulty":2,"tags":["BIM基础","软件常识"],"source":"自编新题","origin":"plus","flag":""},{"id":"b23","type":"multi","module":"BIM基础","kp":"BIM五大特点-可出图性与优化性","stem":"关于 BIM 五大特点，下列理解正确的有（　）。","options":["可出图性指能由模型直接生成平面图、综合管线图及碰撞检查报告等","优化性可支持设计方案比选、工期与造价优化","可视化就是把模型渲染成照片级效果图","五大特点中包括“自动施工”"],"answer":[0,1],"explanation":"C 把可视化等同于效果图渲染，是易错点；D 错，五大特点是可视、协调、模拟、优化、可出图，无自动施工。","difficulty":2,"tags":["BIM基础","易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"b24","type":"multi","module":"识图与管理","kp":"五大专业图纸","stem":"下列图纸与其所属专业对应正确的有（　）。","options":["梁柱配筋图——结构专业","照明平面图——电气专业","给水平面图——暖通专业","风管平面图——暖通专业"],"answer":[0,1,3],"explanation":"给水平面图属于给排水专业，C 张冠李戴；配筋、照明、风管分别对应结构、电气、暖通。","difficulty":2,"tags":["识图","专业分类"],"source":"自编新题","origin":"plus","flag":""},{"id":"b25","type":"multi","module":"识图与管理","kp":"合同价形式","stem":"关于施工合同价形式，下列说法正确的有（　）。","options":["总价合同在任何情况下都不允许调整","单价合同按实际完成工程量乘以合同单价结算","成本加酬金合同中业主承担的成本风险相对较大","施工合同价形式只有总价合同一种"],"answer":[1,2],"explanation":"总价合同在工程变更等约定情形下可以调整，A 太绝对；价形式还有单价、成本加酬金等，D 错。","difficulty":2,"tags":["项目管理","合同"],"source":"自编新题","origin":"plus","flag":""},{"id":"c01","type":"single","module":"碳排放","kp":"排放因子法计算（用电）","stem":"某办公楼改造后年用电量为 25 万 kWh，题干给定该地区电力碳排放因子为 0.55 kgCO₂/kWh，则该建筑年用电产生的碳排放量约为（　）。","options":["13.75 tCO₂","137.5 tCO₂","1375 tCO₂","1.375 tCO₂"],"answer":[1],"explanation":"碳排放量＝活动数据×排放因子＝250000 kWh×0.55 kgCO₂/kWh＝137500 kg＝137.5 t。注意 kg 换算为 t 要除以 1000。","difficulty":2,"tags":["计算题","排放因子法"],"source":"自编新题","origin":"plus","flag":""},{"id":"c02","type":"single","module":"碳排放","kp":"单位面积碳排放强度","stem":"某小学教学楼年碳排放总量为 480 tCO₂，建筑面积为 8000 m²，则该建筑的单位面积碳排放强度为（　）。","options":["6 kgCO₂/m²","30 kgCO₂/m²","60 kgCO₂/m²","600 kgCO₂/m²"],"answer":[2],"explanation":"480 t＝480000 kg；480000 kg÷8000 m²＝60 kgCO₂/m²。单位面积碳排放强度＝年碳排放总量÷建筑面积。","difficulty":2,"tags":["计算题","碳排放强度"],"source":"自编新题","origin":"plus","flag":""},{"id":"c03","type":"single","module":"碳排放","kp":"排放因子法计算（燃气）","stem":"某医院年天然气用量为 80 万 m³，题干给定天然气碳排放因子为 2.16 kgCO₂/m³，则其年燃气碳排放量约为（　）。","options":["17.28 tCO₂","172.8 tCO₂","17280 tCO₂","1728 tCO₂"],"answer":[3],"explanation":"800000 m³×2.16 kgCO₂/m³＝1728000 kg＝1728 t。先按 kg 算出结果，再除以 1000 换算为 t。","difficulty":2,"tags":["计算题","排放因子法"],"source":"自编新题","origin":"plus","flag":""},{"id":"c04","type":"single","module":"碳排放","kp":"GB/T 51366 标准版本","stem":"《建筑碳排放计算标准》GB/T 51366 的现行版本年份是（　）。","options":["2015 年","2017 年","2019 年","2021 年"],"answer":[2],"explanation":"现行标准为《建筑碳排放计算标准》GB/T 51366-2019，2019 年发布，是建筑碳排放核算的主要依据。","difficulty":1,"tags":["标准号"],"source":"自编新题","origin":"plus","flag":""},{"id":"c05","type":"single","module":"碳排放","kp":"运行阶段占比最大原因","stem":"建筑运行阶段碳排放占全过程碳排放的比重最大，其主要原因是（　）。","options":["运行阶段持续时间长、建筑用能持续发生","运行阶段消耗的建筑材料最多","运行阶段需要大量拆除机械","运行阶段不消耗能源"],"answer":[0],"explanation":"建筑使用年限通常几十年，采暖空调、照明等用能长期持续，累积碳排放量大，故运行阶段占比最大。","difficulty":1,"tags":["阶段划分"],"source":"自编新题","origin":"plus","flag":""},{"id":"c06","type":"single","module":"碳排放","kp":"绿建评价等级数量","stem":"按《绿色建筑评价标准》GB/T 50378-2019，绿色建筑评价等级共有（　）个。","options":["3 个","4 个","5 个","6 个"],"answer":[1],"explanation":"等级由低到高为基本级、一星级、二星级、三星级，共 4 个；最高为三星级，没有四星级、五星级。","difficulty":1,"tags":["GB/T 50378"],"source":"自编新题","origin":"plus","flag":""},{"id":"c07","type":"single","module":"碳排放","kp":"减碳设计手段优先顺序","stem":"按“被动式优先”的减碳设计思路，下列措施中最应优先考虑的是（　）。","options":["增设屋顶光伏发电","优化建筑朝向与自然通风","更换高效空调机组","增加小区绿化碳汇"],"answer":[1],"explanation":"减碳设计顺序为：被动式措施（朝向、遮阳、自然通风、保温隔热）→主动设备高效化→可再生能源利用→碳汇与回收利用。","difficulty":2,"tags":["减碳设计"],"source":"自编新题","origin":"plus","flag":""},{"id":"c08","type":"single","module":"碳排放","kp":"既有建筑改造与建材回收","stem":"老旧小区改造中把拆除的旧砖、旧钢材回收再利用，主要减少的是下列哪个阶段的碳排放（　）。","options":["建材生产与运输阶段","建造阶段","运行阶段","拆除阶段"],"answer":[0],"explanation":"回收再利用减少了新建材的生产与运输需求，因此主要降低建材生产与运输阶段的碳排放，这正是改造再利用的减碳来源。","difficulty":2,"tags":["既有建筑改造"],"source":"自编新题","origin":"plus","flag":""},{"id":"c09","type":"single","module":"碳排放","kp":"绿建五大指标类","stem":"绿色建筑评价五大指标类中，与节能、节水、节材直接对应的是（　）。","options":["安全耐久","资源节约","健康舒适","环境宜居"],"answer":[1],"explanation":"五大指标类为安全耐久、健康舒适、生活便利、资源节约、环境宜居；节能、节水、节材归入“资源节约”。","difficulty":1,"tags":["GB/T 50378"],"source":"自编新题","origin":"plus","flag":""},{"id":"c10","type":"single","module":"碳排放","kp":"行业大数（能耗占比）","stem":"按中国建筑节能协会《中国建筑能耗研究报告》（2020 年数据口径），我国建筑全过程能耗约占全国能源消费总量的（　）。","options":["约 15%","约 25%","约 45%","约 75%"],"answer":[2],"explanation":"该口径下建筑全过程能耗约占全国能源消费总量的 45% 上下，碳排放约占全国碳排放总量的 50% 上下，两个数不要记反。","difficulty":1,"tags":["行业大数"],"source":"自编新题","origin":"plus","flag":""},{"id":"c11","type":"single","module":"能耗模拟","kp":"节能率计算","stem":"某办公楼改造前年综合能耗为 120 万 kWh，改造后降为 96 万 kWh，则本次改造的节能率为（　）。","options":["20%","16%","24%","80%"],"answer":[0],"explanation":"节能率＝(改造前－改造后)÷改造前＝(120－96)÷120＝20%。96÷120＝80% 是改造后占改造前的比例，不是节能率。","difficulty":2,"tags":["计算题","节能率"],"source":"自编新题","origin":"plus","flag":""},{"id":"c12","type":"single","module":"能耗模拟","kp":"分项计量分类（动力用电）","stem":"公共建筑电量分项计量中，“动力用电”分项通常包括（　）。","options":["照明灯具用电","电梯、水泵等动力设备用电","空调主机及末端用电","插座与办公设备用电"],"answer":[1],"explanation":"四类分项为照明插座、空调、动力、特殊用电；动力用电指电梯、水泵等动力设备，照明与空调用电分别单列。","difficulty":1,"tags":["分项计量"],"source":"自编新题","origin":"plus","flag":""},{"id":"c13","type":"single","module":"能耗模拟","kp":"体形系数限值目的","stem":"严寒、寒冷地区对建筑体形系数提出限值要求，其主要目的是（　）。","options":["控制窗墙面积比","提高建筑容积率","保证自然采光","减少外围护结构散热面积、降低采暖能耗"],"answer":[3],"explanation":"体形系数＝外表面积÷所包围体积，越大则单位体积对应的散热面积越大，越不利于节能，故严寒、寒冷地区要限值控制。","difficulty":2,"tags":["体形系数"],"source":"自编新题","origin":"plus","flag":""},{"id":"c14","type":"single","module":"能耗模拟","kp":"围护结构薄弱部位","stem":"外墙、屋面、外窗三大围护部位中，通常保温隔热性能最薄弱、对能耗影响最突出的是（　）。","options":["外窗","外墙","屋面","楼板"],"answer":[0],"explanation":"外窗是围护结构保温隔热的薄弱环节，窗墙面积比过大会明显提高采暖和空调能耗。","difficulty":1,"tags":["围护结构"],"source":"自编新题","origin":"plus","flag":""},{"id":"c15","type":"single","module":"能耗模拟","kp":"窗墙面积比定义","stem":"窗墙面积比是指（　）。","options":["窗口面积与建筑总面积之比","玻璃面积与窗框面积之比","窗口面积与所在朝向墙面面积之比","可开启窗面积与房间地面面积之比"],"answer":[2],"explanation":"窗墙面积比＝窗口面积÷所在朝向的墙面面积，是控制围护结构保温隔热与采光平衡的关键指标。","difficulty":2,"tags":["窗墙面积比"],"source":"自编新题","origin":"plus","flag":""},{"id":"c16","type":"single","module":"能耗模拟","kp":"热桥的质量问题","stem":"围护结构热桥部位除热量流失集中外，还容易出现的质量问题是（　）。","options":["结构承载力不足","内表面结露、发霉","隔声性能明显下降","防火等级降低"],"answer":[1],"explanation":"热桥部位传热能力强、内表面温度偏低，冬季易结露甚至发霉，是保温施工和节能改造的重点部位。","difficulty":2,"tags":["热桥"],"source":"自编新题","origin":"plus","flag":""},{"id":"c17","type":"single","module":"能耗模拟","kp":"遮阳系数含义","stem":"外窗遮阳系数越小，通常说明（　）。","options":["遮阳效果越差","自然采光越好","传热系数越大","遮阳效果越好，透过外窗的太阳辐射得热越少"],"answer":[3],"explanation":"遮阳系数反映透过外窗的太阳得热比例，数值越小遮阳效果越好、夏季空调得热负荷越低。","difficulty":2,"tags":["遮阳系数"],"source":"自编新题","origin":"plus","flag":""},{"id":"c18","type":"single","module":"能耗模拟","kp":"能耗模拟软件用途","stem":"某设计院要在方案阶段比较两种体形系数方案的全年能耗高低，最适宜采用的工具是（　）。","options":["EnergyPlus、DeST 等能耗模拟软件","结构计算软件","工程量清单计价软件","效果图渲染软件"],"answer":[0],"explanation":"能耗模拟软件（EnergyPlus 由美国能源部支持开发、DeST 由清华大学开发）用于方案能耗比选、节能率测算与绿建达标预评估。","difficulty":1,"tags":["能耗模拟软件"],"source":"自编新题","origin":"plus","flag":""},{"id":"c19","type":"single","module":"能耗模拟","kp":"分项计量分类（特殊用电）","stem":"大型公共建筑电量分项计量中，“特殊用电”分项通常指（　）。","options":["照明插座用电","空调用电","电梯与水泵用电","信息机房、厨房等专用设备用电"],"answer":[3],"explanation":"四类分项为照明插座、空调、动力、特殊用电；信息机房、厨房等专用设备用电归入特殊用电，容易漏记。","difficulty":2,"tags":["分项计量"],"source":"自编新题","origin":"plus","flag":""},{"id":"c20","type":"single","module":"能耗模拟","kp":"节能诊断思路","stem":"建筑节能诊断的正确思路是（　）。","options":["先通过分项计量监测找异常，再对围护结构、系统设备、运行策略逐项排查","直接更换全部机电设备","先拆除重建再谈节能","只看总电费，不做分项分析"],"answer":[0],"explanation":"节能诊断遵循“先计量监测找异常，再对围护结构、设备、运行策略逐项排查”的顺序，避免盲目改造。","difficulty":1,"tags":["节能诊断"],"source":"自编新题","origin":"plus","flag":""},{"id":"c21","type":"multi","module":"碳排放","kp":"运行阶段碳排放来源","stem":"下列属于建筑运行阶段碳排放来源的有（　）。","options":["建材生产与运输过程用能","采暖空调系统耗电","照明与办公设备用电","生活热水用能"],"answer":[1,2,3],"explanation":"运行阶段碳排放来自建筑使用中的采暖空调、照明与设备、生活热水等用能；建材生产与运输属另一阶段，不能混入。","difficulty":2,"tags":["阶段划分"],"source":"自编新题","origin":"plus","flag":""},{"id":"c22","type":"multi","module":"碳排放","kp":"既有建筑改造减碳措施","stem":"既有建筑改造中，有利于降低运行阶段碳排放的措施有（　）。","options":["外墙增加外保温层","增大窗墙面积比","更换为节能外窗","加装屋顶光伏"],"answer":[0,2,3],"explanation":"外保温与节能外窗降低围护结构传热，屋顶光伏替代部分市电，均可减碳；增大窗墙面积比反而增加能耗。","difficulty":2,"tags":["减碳设计","既有建筑改造"],"source":"自编新题","origin":"plus","flag":""},{"id":"c23","type":"multi","module":"能耗模拟","kp":"围护结构与节能","stem":"关于建筑围护结构与节能，下列说法正确的有（　）。","options":["体形系数越大越有利于建筑节能","外窗通常是围护结构保温隔热的薄弱环节","热桥部位传热明显强于周边，且易结露","传热系数 K 值越大，保温性能越好"],"answer":[1,2],"explanation":"体形系数越大越不利、K 值越小保温越好，故 A、D 错；外窗薄弱、热桥易结露，B、C 正确。","difficulty":2,"tags":["体形系数","传热系数","热桥"],"source":"自编新题","origin":"plus","flag":""},{"id":"c24","type":"multi","module":"能耗模拟","kp":"分项计量（动力用电）","stem":"大型公共建筑电量分项计量中，属于“动力用电”的有（　）。","options":["电梯用电","照明灯具用电","生活水泵用电","食堂厨房专用设备用电"],"answer":[0,2],"explanation":"动力用电指电梯、水泵等动力设备；照明灯具属照明插座分项，厨房专用设备属特殊用电分项。","difficulty":2,"tags":["分项计量"],"source":"自编新题","origin":"plus","flag":""},{"id":"c25","type":"multi","module":"能耗模拟","kp":"EMC 与运行调适、分项计量","stem":"关于既有建筑绿色改造与低碳运维，下列说法正确的有（　）。","options":["合同能源管理（EMC）由节能服务公司投资改造，按合同分享节能收益","运行调适可通过优化运行参数与控制策略降低能耗，且不必更换主要设备","增大窗墙面积比有利于建筑节能","分项计量是找出能耗大户、开展节能诊断的前提"],"answer":[0,1,3],"explanation":"EMC 由服务公司投资、按节能收益分享；运行调适靠参数与策略优化；分项计量是诊断前提。增大窗墙面积比不利于节能，C 错。","difficulty":2,"tags":["EMC","运行调适"],"source":"自编新题","origin":"plus","flag":""},{"id":"o01","type":"single","module":"低碳运维","kp":"运维五类功能","stem":"设施管理（FM）的五类典型功能中，负责设备台账、备件与保修期限管理的是（　）。","options":["空间管理","应急管理","资产管理","能耗管理"],"answer":[2],"explanation":"FM 五类功能为空间管理、资产管理、设备维护维修、应急管理、能耗管理。设备型号、厂家、安装时间、保修期属资产台账，归资产管理。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o02","type":"single","module":"低碳运维","kp":"低碳运维理念","stem":"下列运维做法中，最符合低碳运维理念的是（　）。","options":["设备坏了再换，平时不做巡检","建立能效基线、按月对标并持续调适运行策略","按固定日历周期对全部设备一刀切换件","只做一次性改造，之后不再跟踪运行数据"],"answer":[1],"explanation":"低碳运维强调以数据为依据的持续改进：先建基准，再按月对标、发现偏差、调适策略；事后维修、盲目定期换件、改造后不跟踪都不符合。","difficulty":1,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o03","type":"single","module":"低碳运维","kp":"BAS 监控对象","stem":"BAS 对冷冻站实施群控时，下列不属于其典型监控内容的是（　）。","options":["冷冻水供水温度监测","冷水机组启停与台数控制","冷却塔风机运行状态","建筑结构构件配筋计算"],"answer":[3],"explanation":"BAS 集中监控暖通空调、给排水、供配电、照明、电梯等机电系统；配筋计算属结构设计，与楼宇自控无关。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o04","type":"single","module":"低碳运维","kp":"DDC","stem":"楼宇自控系统中的 DDC，其正确含义与作用是（　）。","options":["一种楼宇自控通信协议","一种碳排放因子","现场级直接数字控制器，采集传感器信号并直接驱动执行器","云端能耗分析平台"],"answer":[2],"explanation":"DDC 即直接数字控制器，是 BAS 的现场级控制设备，向下接传感器与执行器，向上与监控中心通信，是「感知—控制」的落点。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o05","type":"single","module":"低碳运维","kp":"BACnet/Modbus","stem":"关于 BACnet 与 Modbus，说法正确的是（　）。","options":["二者都是楼宇自控系统常用通信协议，用于设备与平台间的数据交换","BACnet 是一种三维建模软件","Modbus 是一种建筑保温材料","采用标准协议后不同厂商设备反而无法互联"],"answer":[0],"explanation":"BACnet、Modbus 均为楼宇自控常用通信协议，作用是解决不同厂商设备与系统之间的数据互通，与建模软件、材料、碳排放因子无关。","difficulty":2,"tags":["易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o06","type":"single","module":"低碳运维","kp":"智慧运维闭环","stem":"智慧运维闭环「监测—报警—派单—处置—复核」中，复核环节的主要作用是（　）。","options":["重新编制改造设计方案","统计工程量清单","关闭全部传感器以节约用电","确认处置效果并销项，使问题真正闭环"],"answer":[3],"explanation":"复核是闭环的收口：核对处置后数据是否恢复、能耗是否回落，确认有效才销项，并把结论回写策略库，避免「报了警没人管、修了不验证」。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o07","type":"single","module":"低碳运维","kp":"预测性维护","stem":"与定期维修相比，预测性维护的主要优势是（　）。","options":["按固定日历周期换件更省钱","依据设备状态监测数据在故障前干预，减少非计划停机与过度维修","必须等设备停机后才能开始维修","不需要任何运行数据"],"answer":[1],"explanation":"预测性维护的依据是状态监测数据与趋势分析，不是固定周期；它介于事后维修与定期维修之间，既避免突发停机，也避免过度换件。","difficulty":2,"tags":["必背点","易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o08","type":"single","module":"低碳运维","kp":"新风CO2联动","stem":"空调新风系统采用 CO2 浓度联动控制能够节能，其根本原因是（　）。","options":["降低了室内照明功率","提高了冷水机组的额定效率","减少了处理室外新风所消耗的冷量与热量，即新风负荷","缩短了设备运行年限"],"answer":[2],"explanation":"把室外空气处理到室内参数需要消耗冷量或热量（新风负荷），新风量越大负荷越大；按 CO2 浓度按需给新风，可在保证空气品质的同时削减新风负荷。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o09","type":"single","module":"低碳运维","kp":"照明智能控制","stem":"下列属于照明系统低碳运维措施的是（　）。","options":["全天全区域满功率照明","取消应急照明回路以省电","用白炽灯替代 LED 灯","分区分时控制，配合照度感应、人体感应与恒照度调光"],"answer":[3],"explanation":"照明节能靠「按需给光」：分区、分时、照度与人体感应、恒照度调光，同时保留应急照明。取消应急照明违反安全要求，不是节能。","difficulty":1,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o10","type":"single","module":"低碳运维","kp":"电梯智能管控","stem":"电梯系统实施低碳运维，合理做法是（　）。","options":["采用群控按需派梯，并加装能量回馈装置","高峰时段停用半数电梯","提高额定速度以缩短单次运行时间","取消除日常维保以降低费用"],"answer":[0],"explanation":"电梯节能主要靠群控按需派梯减少空驶、能量回馈回收制动能量、待机休眠；取消维保会带来安全与寿命问题，不是节能手段。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o11","type":"single","module":"低碳运维","kp":"储能运维","stem":"建筑储能系统在低碳运维中的合理定位是（　）。","options":["主要用于建筑结构加固","发挥削峰填谷与需量控制作用，并与光伏协同提高自发自用比例","可完全替代消防应急电源","储能系统不需要监测电池状态"],"answer":[1],"explanation":"储能的价值在削峰填谷、需量管理与光伏消纳；电池 SOC、温度、消防状态必须持续监测；储能不能替代消防应急电源。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o12","type":"single","module":"低碳运维","kp":"老旧小区改造三类内容","stem":"城镇老旧小区改造分为基础类、完善类、提升类，下列属于提升类的是（　）。","options":["供水供电管网更新改造","小区内建筑节能改造","屋面防水与外墙修缮","养老、托育、助餐等社区公共服务设施配套"],"answer":[3],"explanation":"基础类保安全与基本生活（管网、消防、安防），完善类满足生活便利（节能改造、加装电梯、停车），提升类丰富社区服务供给。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o13","type":"single","module":"低碳运维","kp":"数字孪生运维","stem":"运维阶段，数字孪生相比静态 BIM 模型多出的关键能力是（　）。","options":["输出施工图纸","提高建模精度","实时同步运行状态并支持仿真推演","自动计算工程量清单"],"answer":[2],"explanation":"数字孪生＝静态 BIM 底座＋IoT 实时数据，实现物理实体与虚拟模型的双向映射，可做能耗诊断与故障推演；静态模型无法反映运行状态。","difficulty":2,"tags":["必背点","易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o14","type":"single","module":"低碳运维","kp":"AI Agent 运维","stem":"AI Agent 在建筑低碳运维中的合理角色是（　）。","options":["基于能耗与设备数据自动发现异常、给出诊断建议并辅助生成工单","取代现场维修人员的全部作业","用于绘制建筑施工图","用于编制工程量清单"],"answer":[0],"explanation":"AI Agent 的定位是把「异常发现—能源诊断—项目建议—减排测算—考核分析」的重复劳动自动化，决策与现场操作仍需人复核。","difficulty":2,"tags":["拓展","AI"],"source":"自编新题","origin":"plus","flag":""},{"id":"o15","type":"single","module":"低碳运维","kp":"设备轮停与时序优化","stem":"对多台并联冷水机组实施轮停与时序优化，主要目的是（　）。","options":["减少冷水机组的配置台数","使各机组运行时长均衡，并让机组尽量在高效率区间运行","降低设备初投资","取消机组之间的联锁保护"],"answer":[1],"explanation":"轮停让各机组磨损与运行时间均衡，避免长期只开一台；时序优化按负荷匹配台数与出力，使系统在高效率区间运行，属不换设备的运行调适。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o16","type":"multi","module":"低碳运维","kp":"运维侧低碳手段","stem":"下列属于运维阶段低碳运行手段的有（　）。","options":["用分项计量定位能耗大户","设备轮停与时序优化","空调系统运行调适","无限制增大窗墙面积比"],"answer":[0,1,2],"explanation":"提纲列举的运维侧低碳手段：分项计量找大户、设备轮停与时序优化、空调系统调适、新风按需控制、照明智能控制、光伏与储能协同。窗墙比过大会增大能耗。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o17","type":"multi","module":"低碳运维","kp":"楼宇自控通信协议","stem":"关于楼宇自控系统的通信协议，说法正确的有（　）。","options":["通信协议用于设备与平台之间的数据交换","BACnet 是 IFC 数据交换标准的别称","采用标准协议便于不同厂商设备集成与扩展","Modbus 是楼宇自控常用协议之一"],"answer":[0,2,3],"explanation":"BACnet、Modbus 是楼宇自控常用通信协议，解决多厂商互通；IFC 是 BIM 数据交换标准，与 BACnet 不是一回事。","difficulty":2,"tags":["易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o18","type":"multi","module":"低碳运维","kp":"数字孪生运维平台","stem":"数字孪生运维平台应具备的能力有（　）。","options":["只需静态几何模型即可","实时接入 IoT 传感数据","支持能耗诊断与故障仿真推演","与设备台账等静态信息关联管理"],"answer":[1,2,3],"explanation":"孪生体＝静态 BIM 底座（含设备台账）＋实时 IoT 数据＋仿真分析能力；只有静态几何模型无法反映运行状态。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o19","type":"multi","module":"低碳运维","kp":"光伏与储能运维","stem":"光伏与储能系统投入运行后，运维应关注的有（　）。","options":["定期清洗组件、检查遮挡","取消逆变器运行监测以节省成本","管理电池 SOC 与充放电策略","通过组串电流电压定位异常"],"answer":[0,2,3],"explanation":"光伏看组串与逆变器效率、组件积灰遮挡；储能看电池 SOC、温度与充放电策略、消防状态。取消逆变器监测会失去故障定位能力。","difficulty":2,"tags":["必背点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o20","type":"multi","module":"低碳运维","kp":"分项计量特殊用电","stem":"建筑能耗分项计量中，下列用电应计入「特殊用电」分项的有（　）。","options":["数据机房用电","厨房餐厅用电","公共区域照明用电","电梯动力用电"],"answer":[0,1],"explanation":"四类分项为照明插座、空调、动力、特殊用电；特殊用电指信息机房、厨房餐厅、洗衣等专项用电，照明与电梯分别属照明插座和动力分项。","difficulty":2,"tags":["易错点"],"source":"自编新题","origin":"plus","flag":""},{"id":"o21","type":"single","module":"低碳运维","kp":"雨水回收系统","stem":"关于建筑雨水回收系统的设计，做法合理的是（　）。","options":["屋面雨水不经处理直接回用于生活饮用","雨水回收只需设景观水池，不必设储存调节设施","屋面雨水经弃流、过滤、消毒后回用于绿化浇洒、道路冲洗等杂用","屋面雨水应直接接入污水管道"],"answer":[2],"explanation":"雨水回用限非饮用杂用，需经初期弃流、过滤、消毒并设储存调节；直排污水管既浪费水资源又加重污水处理负荷。本考点属拓展，若考试未涉及不影响主分。","difficulty":2,"tags":["水利结合"],"source":"自编新题","origin":"plus","flag":""},{"id":"o22","type":"single","module":"低碳运维","kp":"中水回用","stem":"建筑中水回用的合理用途是（　）。","options":["冲厕、绿化浇洒、道路冲洗等非饮用杂用","作为生活饮用水水源","用于餐具清洗","用于医疗手术用水"],"answer":[0],"explanation":"中水是生活污水经处理后达到杂用水质的水，只能用于冲厕、绿化、道路冲洗、景观补水等非饮用用途。本考点属拓展，若考试未涉及不影响主分。","difficulty":1,"tags":["水利结合"],"source":"自编新题","origin":"plus","flag":""},{"id":"o23","type":"single","module":"低碳运维","kp":"泵站与水泵能耗","stem":"水泵与泵站节能运行，正确的做法是（　）。","options":["长期用阀门节流代替调速","水泵选型越大越节能","取消泵站运行监测以省投资","采用变频调速使水泵在高效区运行、按需供水"],"answer":[3],"explanation":"水泵能耗与流量、扬程强相关，变频调速按需供水可让工况点落在高效区；阀门节流是白白消耗能量，选型过大会长期低效。本考点属拓展，若考试未涉及不影响主分。","difficulty":2,"tags":["水利结合"],"source":"自编新题","origin":"plus","flag":""},{"id":"o24","type":"single","module":"低碳运维","kp":"污水处理厂能耗","stem":"城镇污水处理厂节能降碳的主要方向是（　）。","options":["加大曝气量以提升处理效果","曝气系统精准控制、设备变频，并回收沼气、光伏等能源","停用污泥处理以节约电耗","提高出水标准必然降低能耗"],"answer":[1],"explanation":"污水厂能耗大头在曝气与提升泵，精准曝气与变频是主抓手；沼气热电联产、光伏可抵扣能耗。盲目加曝气与停污泥处理都不合理。本考点属拓展，若考试未涉及不影响主分。","difficulty":2,"tags":["水利结合"],"source":"自编新题","origin":"plus","flag":""},{"id":"o25","type":"single","module":"低碳运维","kp":"水利数字孪生","stem":"水利工程数字孪生的数据基础是（　）。","options":["仅依靠三维效果图渲染","仅依靠纸质设计图纸","融合水文、工情、视频监测与 BIM/GIS 等多源数据","仅依靠单一水位计读数"],"answer":[2],"explanation":"水利数字孪生以 BIM/GIS 为静态底座，叠加水文、工情、视频等实时监测数据实现同步映射，单点数据与效果图都撑不起孪生体。本考点属拓展，若考试未涉及不影响主分。","difficulty":2,"tags":["水利结合"],"source":"自编新题","origin":"plus","flag":""},{"id":"q01","type":"qa","module":"作品赛","kp":"智慧运维闭环","stem":"评委提问：请说明你如何为本项目这栋既有公共建筑设计运维期的智慧管控闭环，并讲清数据在闭环各环节如何流转。","options":[],"answer":[],"reference":"① 感知层：按分项计量四类（照明插座、空调、动力、特殊用电）加装智能电表，配温湿度、CO2、水浸、设备振动等传感器，经网关接入 BAS 与 IoT。② 数据层：能耗与设备数据入平台，与运维 BIM 模型中的设备台账（型号、厂家、安装时间、保修期）绑定，做到「一设备一档案」。③ 诊断层：设阈值与基准线，做同比环比与能效对标，识别异常与能耗大户。④ 处置层：异常触发报警，自动生成工单派给责任人。⑤ 复核层：处置后回看数据是否恢复、节能量是否兑现，确认有效再销项，并把结论回写策略库。⑥ 评价层：按月出能效与碳排报表，支撑年度考核。核心是监测—报警—派单—处置—复核五步不断环。","keywords":["分项计量","设备台账","阈值报警","工单","复核销项","能效对标","闭环"],"difficulty":2,"tags":["答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q02","type":"qa","module":"作品赛","kp":"分项计量找能耗大户","stem":"评委提问：你如何用分项计量找出这栋建筑的能耗大户？找到之后怎么办？","options":[],"answer":[],"reference":"① 建计量：按四类分项（照明插座、空调、动力、特殊用电）设置回路与表计，做到一回路一计量、一表一编码。② 建基线：采集连续 1 年以上数据，算单位面积能耗与同类建筑对标值，形成基准。③ 时间维度：看日、周、月曲线，重点抓「持续高于基准」和「夜间/假期基载不降」的回路。④ 空间维度：按楼层、分区拆分，定位到具体区域与设备。⑤ 设备级复核：对疑似大户加装设备级计量（单台冷机、水泵、电梯），同步核查运行参数与控制逻辑。⑥ 输出「能耗大户清单」，按节能潜力×投资回收期排序，进入运行调适或改造方案，并用改造前后数据验证效果。","keywords":["四类分项","一回路一计量","夜间基载","单位面积能耗","能效对标","能耗大户清单","验证"],"difficulty":2,"tags":["答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q03","type":"qa","module":"作品赛","kp":"投资回收期","stem":"评委提问：你们方案的投资回收期怎么算？请说明公式、数据来源和主要影响因素。","options":[],"answer":[],"reference":"① 静态投资回收期＝改造投资总额÷年节约运行费用；年节约额＝改造前年能耗费用－改造后年能耗费用，并计入维护费的变化。② 若各年节省额不同，用累计净现金流由负转正的时间点，并在该年内按比例插值。③ 动态回收期需按折现率把各年净收益折现，结果比静态长，答辩时说明用的是哪一种。④ 数据来源：改造清单与当地材料、设备价格；分项计量与能源账单；能耗模拟算出的改造前后能耗差。⑤ 影响因素：投资额、当地电价气价、节能率、设备寿命与效率衰减、运行管理水平、维护成本变化、补贴与电价上涨趋势。⑥ 建议给区间并做敏感性分析，同时给出降碳比，两项一起构成效益分析。","keywords":["改造投资","年节约费用","累计净现金流","折现","电价","节能率","敏感性分析","降碳比"],"difficulty":2,"tags":["答辩高频","公式"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q04","type":"qa","module":"作品赛","kp":"既有改造与新建比选","stem":"评委提问：为什么选既有建筑改造，而不是拆了新建？请从碳排放、政策、经济三方面回答。","options":[],"answer":[],"reference":"① 碳角度：拆除重建会产生大量建材生产与运输阶段、建造阶段的碳排放；保留主体结构做改造，等于避免了这部分隐含碳，改造再利用本身就是减碳，这也是本模块选「运维＋改造」而非新建的逻辑。② 政策角度：十五五城市更新要求推动重点领域节能降碳、加强既有建筑节能降碳改造、鼓励合同能源管理等市场化机制；公共建筑存量巨大、运行时间长、能耗集中，是绿色低碳改造主战场。③ 经济角度：改造投资强度低于新建，回收期更短，且可分区分时实施、不影响建筑继续使用。④ 技术角度：围护结构、机电系统、智慧管控可逐项改造并逐项验证效果。⑤ 前提与局限：先做建筑体检，结构安全、消防不满足时仍需加固甚至局部重建。","keywords":["隐含碳","建材生产与运输","建造阶段","城市更新","存量公共建筑","合同能源管理","建筑体检"],"difficulty":2,"tags":["答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q05","type":"qa","module":"作品赛","kp":"雨水回收设计与监测","stem":"结合智慧水利，评委提问：这栋建筑的雨水回收系统你会怎么设计？运行期又如何监测？","options":[],"answer":[],"reference":"① 定用途：回用于绿化浇洒、道路冲洗、冲厕等杂用，绝不进入饮用系统。② 算水量：由设计降雨、汇水面积算可收集雨量，与逐月用水需求做水量平衡，据此定储水池容积与弃流量。③ 定流程：屋面与硬化地面雨水→初期弃流→截污过滤→储存→消毒→变频加压回用，溢流接市政雨水管。④ 防风险：与市政补水自动切换，设防倒流措施，避免误接污染生活给水。⑤ 监测：在弃流口、储水池、回用总管设流量计与液位计，水质定期或在线检测浊度、余氯，数据接入运维平台做水量平衡与漏损报警。⑥ 效益与运维：替代自来水、削减径流与内涝风险，可支撑人均用水量下降 3% 的考核；定期清淤、换滤料、维护消毒设备。","keywords":["初期弃流","水量平衡","储水池容积","消毒","防倒流","液位流量监测","内涝","人均用水量"],"difficulty":3,"tags":["智慧水利","答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q06","type":"qa","module":"作品赛","kp":"运行阶段碳排放核算","stem":"评委提问：你们报告里运行阶段碳排放是怎么算出来的？为什么说运行阶段是减碳重点？","options":[],"answer":[],"reference":"① 边界：按 GB/T 51366-2019 的四个阶段取「运行阶段」，本赛项只关注建筑单体改造与运维，不计算绿化碳汇。② 方法：排放因子法，碳排放量＝活动数据×碳排放因子；活动数据为电、气、热等各类能源消耗量，因子取平台或题干给定值。③ 步骤：读图纸输入围护结构几何与热工参数、设备系统性能参数与房间参数→算运行能耗→逐项乘因子汇总→输出报告。④ 数据校核：与能源账单、分项计量数据对比，偏差需能解释。⑤ 为什么是重点：运行阶段持续几十年，按提纲口径建筑全过程能耗约占全国 45%、碳排放约占 50%，其中运行阶段占比最大。⑥ 用途：作为改造前基准，与改造后对比算降碳比。","keywords":["GB/T 51366-2019","运行阶段","排放因子法","活动数据","围护结构热工参数","基准","降碳比"],"difficulty":2,"tags":["答辩高频","公式"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q07","type":"qa","module":"作品赛","kp":"改造方案比选与排序","stem":"评委提问：任务要求不少于 3 项改造方案，你们是怎么选出这几项的？又凭什么排序？","options":[],"answer":[],"reference":"① 先诊断：用分项计量与能耗模拟找短板，分别评估围护结构、空调系统、照明、可再生能源、节水五个方向。② 提方案：不少于 3 项，例如外窗更换与屋面保温、空调系统能效提升与智能调控、智慧照明、光伏＋储能、节水器具与雨水回用。③ 逐项算账：投资、年节能量、年省费用、碳减排量、投资回收期、降碳比。④ 排序原则：优先「低成本、短回收、不影响使用」的运行调适与照明控制，再做围护结构与设备更新，最后做光伏储能等长回收投资。⑤ 注意耦合：方案之间相互影响，如光伏容量取决于改造后的负荷曲线，需整体迭代而不是简单相加。⑥ 用效益分析报告呈现投资回收期与降碳比，并说明被淘汰方案的理由。","keywords":["能耗诊断","不少于三项","投资回收期","降碳比","方案耦合","先调适后改造","效益分析"],"difficulty":2,"tags":["答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q08","type":"qa","module":"作品赛","kp":"降碳比","stem":"评委提问：降碳比怎么算？它和节能率有什么区别？为什么要同时给两个指标？","options":[],"answer":[],"reference":"① 定义（本方案口径）：降碳比＝（改造前年碳排放－改造后年碳排放）÷改造前年碳排放×100%。② 碳排放按排放因子法逐项算，电、气分别乘对应因子后相加，基准年与改造后用同一气象年、同一使用强度。③ 与节能率区别：节能率按能耗量（kWh、m3）算，降碳比按碳排放算；能源结构或电力因子变化时两者不相等，光伏替代市电会明显拉高降碳比而能耗下降有限。④ 计算要点：光伏自用部分按替代电量×电网因子计减碳；不要重复计算同一度电。⑤ 影响因素：基准年选取、改造范围、能源结构、因子取值年份。⑥ 与投资回收期一起，构成任务指导书要求效益分析报告必须给出的两项硬指标。","keywords":["降碳比","节能率","排放因子法","基准年","光伏替代","避免重复计算","效益分析"],"difficulty":2,"tags":["答辩高频","公式"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q09","type":"qa","module":"作品赛","kp":"智慧管控平台架构","stem":"评委提问：请画出你说的智慧管控平台架构，说明分几层、每层做什么、数据从哪来到哪去。","options":[],"answer":[],"reference":"① 感知层：智能电表、水表、温湿度与 CO2 传感器、水浸与振动传感器，以及电梯、光伏、储能的设备网关。② 网络与数据层：经 BACnet、Modbus 等协议采集，做清洗与统一编码，并与 BIM 构件 ID 关联。③ 模型层：运维 BIM 模型作静态底座，含几何与设备台账，LOD 500 对应竣工与运维模型。④ 服务层：能耗监测、分项计量、能效对标、报警与工单、预测性维护、碳排核算。⑤ 应用层：可视化大屏、手机端工单、月度报表与年度考核。⑥ 关键区别：静态 BIM 加实时 IoT 数据形成双向映射才叫数字孪生，可做仿真推演。⑦ 落地建议：先把数据打通再谈智能，避免做成只看不用的展示屏。","keywords":["感知层","BACnet/Modbus","构件 ID 关联","运维 BIM","LOD 500","能效对标","数字孪生","避免展示屏"],"difficulty":3,"tags":["答辩高频","架构"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q10","type":"qa","module":"作品赛","kp":"设备高效系统低效","stem":"评委追问：你们换了高效设备，但实测能耗没降多少，也就是「设备高效、系统低效」，怎么解释、怎么解决？","options":[],"answer":[],"reference":"① 定性：问题多出在运行策略、水力失衡、台数匹配与控制逻辑，而不是设备铭牌效率。② 找证据：用分项计量与 BAS 历史数据看冷站综合能效、供回水温差、水泵频率与阀门开度，判断是「大流量小温差」还是台数控制不合理。③ 做调适：不换设备也能省，包括冷冻水供水温度重置、水泵变频压差设定优化、机组台数与轮停时序优化、末端平衡阀调节。④ 固化：把优化后的策略写进 BAS 控制逻辑与运维 SOP，设能效看板持续监控，防止被现场手动改回。⑤ 算收益：对比调适前后单位面积能耗与费用，调适投入小、回收期最短，可放在改造清单第一位。⑥ 长效：定期复调并纳入年度考核接口。","keywords":["运行调适","大流量小温差","冷站综合能效","台数控制","压差设定","策略固化","回收期最短"],"difficulty":3,"tags":["答辩高频","易错点"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q11","type":"qa","module":"作品赛","kp":"光伏与储能运维","stem":"评委提问：你们方案里的光伏和储能怎么定容量、怎么算收益、运维期怎么管？","options":[],"answer":[],"reference":"① 定光伏容量：按屋面可用面积、朝向遮挡与改造后负荷曲线确定，原则是自发自用比例优先。② 定储能：按峰谷电价差与需量控制目标确定功率与容量，功能定位为削峰填谷、需量管理、提高光伏自用率。③ 算收益：光伏省电费＋余电上网收益；储能峰谷套利＋降低需量电费；两项分别测算再合计，配合投资回收期与降碳比。④ 运维：组串电流电压定位异常、组件清洗与遮挡检查、逆变器效率监测、电池 SOC 与温度管理、充放电策略优化、消防与防雷检查。⑤ 安全边界：储能按消防要求独立设置并纳入监测，不能替代消防应急电源。⑥ 汇报要点：说明自发自用率、投资回收期、降碳比三个数。","keywords":["自发自用","峰谷价差","需量管理","组串监测","SOC 管理","消防","投资回收期","降碳比"],"difficulty":3,"tags":["答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q12","type":"qa","module":"作品赛","kp":"公共机构三项指标","stem":"评委提问：国管节能〔2026〕161 号提出三项核心指标，你的方案怎么对接到这三项指标上？","options":[],"answer":[],"reference":"① 指标内容：到 2030 年单位建筑面积碳排放下降 8.5%、单位建筑面积能耗下降 5%、人均用水量下降 3%，并推动公共机构碳排放总量在 2030 年前尽早达峰。② 先建分母：建立建筑面积、用能人数、用水量三本台账，否则强度指标算不出来。③ 目标分解：把三项强度指标按年度、按分区拆到平台看板，替代人工抄表汇总。④ 对应措施：降碳靠围护结构与设备改造、光伏替代与绿电；降能靠运行调适与智能控制；节水靠节水器具、分项水表、漏损监测与雨水中水回用。⑤ 验证：用改造前后账单与平台数据算实际下降幅度，说明与 8.5%、5%、3% 的差距。⑥ 汇报口径：讲清本项目对三项指标的贡献测算。","keywords":["国管节能〔2026〕161 号","单位建筑面积碳排放 8.5%","单位建筑面积能耗 5%","人均用水量 3%","强度指标","目标分解","2026 至 2030"],"difficulty":3,"tags":["答辩高频","政策"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q13","type":"qa","module":"低碳运维","kp":"预测性维护落地","stem":"评委提问：你方案里提到预测性维护，落地需要什么条件？怎么证明它比定期维修更划算？","options":[],"answer":[],"reference":"① 逻辑对比：事后维修停机损失大，定期维修易过度换件，预测性维护按状态数据在故障前干预。② 数据条件：设备振动、温度、电流、压差、运行时长，以及设备台账与历史故障工单；没有测点的设备先补计量。③ 方法：先用阈值报警加趋势分析保证可解释，条件成熟再做剩余寿命估计。④ 流程嵌入：预警→生成工单→处置→记录回写，接入智慧运维闭环，避免只报不管。⑤ 对象排序：冷水机组、水泵、电梯、冷却塔风机等关键设备优先，非关键设备仍用定期维修更经济。⑥ 效益证明：统计非计划停机次数、维修费用、备件库存与设备寿命变化，折算年节省额并算回收期。","keywords":["状态监测","趋势分析","剩余寿命","关键设备优先","工单闭环","非计划停机","年节省额"],"difficulty":2,"tags":["答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q14","type":"qa","module":"作品赛","kp":"AI Agent 在方案中的角色","stem":"评委提问：AI Agent 在你的方案里到底干什么？怎么避免它变成「黑箱」乱给建议？","options":[],"answer":[],"reference":"① 定位：不做现场操作，而是把「异常发现—能耗诊断—措施建议—减排测算—年度考核分析」的重复劳动自动化，人负责复核与执行。② 输入：分项计量与 BAS 数据、设备台账、气象与电价信息。③ 典型任务：夜间基载过高诊断、冷站能效偏低归因、节水漏损提示、改造方案初筛与投资回收期测算。④ 可解释：每条建议必须给出触发数据、依据规则或模型、预期节能量，先规则后模型，关键操作人工确认。⑤ 安全边界：涉及设备安全、消防与人身安全的操作不得自动执行。⑥ 价值证明：统计建议采纳率、累计节能量与节省费用，用数据说明 Agent 不是摆设。","keywords":["异常发现","能耗诊断","人机协同","可解释","触发数据","人工确认","采纳率","累计节能量"],"difficulty":3,"tags":["答辩高频","AI"],"source":"自编问答","origin":"plus","explanation":"","flag":""},{"id":"q15","type":"qa","module":"作品赛","kp":"建筑节水与用水监测","stem":"结合智慧水利，评委提问：这栋建筑的节水与用水监测怎么做？怎么证明人均用水量降了 3%？","options":[],"answer":[],"reference":"① 计量：按用途分项装远传水表（生活、冲厕、空调补水、绿化、厨房），建立用水台账与人均用水量指标，先有分母（用能人数）才谈强度。② 查漏：用夜间最小流量法加分区计量定位漏损点，这是最快的节水手段。③ 措施：节水器具（感应龙头、双档便器）、绿化滴灌与土壤湿度控制、雨水与中水回用替代杂用水、空调冷凝水回收。④ 监测：远传水表入平台，设日、月用水基准与异常报警，与电耗数据联动看「水耗高、电耗也高」的系统性异常。⑤ 验证：改造前后同期对比，扣除人数与季节影响，给出人均用水量下降百分比，对接 3% 指标。⑥ 与水利结合：雨水回用要算水量平衡与储池容积，注意防倒流污染。","keywords":["远传水表","人均用水量","夜间最小流量","分区计量","节水器具","雨水中水回用","水量平衡","防倒流"],"difficulty":2,"tags":["智慧水利","答辩高频"],"source":"自编问答","origin":"plus","explanation":"","flag":""}];
+
+/* ============================================================
+   基础工具
+   ============================================================ */
+const $ = (s, r=document) => r.querySelector(s);
+const $$ = (s, r=document) => Array.from(r.querySelectorAll(s));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const shuffle = a => { a = a.slice(); for(let i=a.length-1;i>0;i--){const j=Math.floor(Math.random()*(i+1));[a[i],a[j]]=[a[j],a[i]];} return a; };
+const sample = (a,n) => shuffle(a).slice(0,n);
+const sameSet = (a,b) => a.length===b.length && a.every(x=>b.includes(x));
+const pct = (a,b) => b? Math.round(a/b*100) : 0;
+const LETTERS = ['A','B','C','D','E','F'];
+
+let toastTimer=null;
+function toast(msg){
+  const t=$('#toast'); t.textContent=msg; t.classList.add('on');
+  clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('on'),1600);
+}
+
+/* ============================================================
+   本地存储
+   ============================================================ */
+const SK = {wrong:'hmod_v1_wrong', stat:'hmod_v1_stat', qa:'hmod_v1_qa', mock:'hmod_v1_mock', exam:'hmod_v1_last'};
+const load = (k, d) => { try{ const v=localStorage.getItem(k); return v? JSON.parse(v) : d; }catch(e){ return d; } };
+const save = (k,v) => { try{ localStorage.setItem(k, JSON.stringify(v)); }catch(e){} };
+
+let STAT = load(SK.stat, {answered:0, correct:0, byMod:{}});
+let WRONG = load(SK.wrong, []);
+let QATXT = load(SK.qa, {});
+let MOCKN = load(SK.mock, 0);
+
+function noteStat(mod, ok){
+  STAT.answered++; if(ok) STAT.correct++;
+  const m = STAT.byMod[mod] || (STAT.byMod[mod]={a:0,c:0});
+  m.a++; if(ok) m.c++;
+  save(SK.stat, STAT);
+}
+function addWrong(id){ if(!WRONG.includes(id)){ WRONG.push(id); save(SK.wrong, WRONG);} }
+function delWrong(id){ const i=WRONG.indexOf(id); if(i>=0){ WRONG.splice(i,1); save(SK.wrong, WRONG);} }
+
+/* ============================================================
+   题库整理
+   ============================================================ */
+const MODULES = ['BIM基础','识图与管理','碳排放','能耗模拟','低碳运维','作品赛','智慧水利拓展'];
+const MOD_KEEP = ['BIM基础','识图与管理','碳排放','能耗模拟','低碳运维','智慧水利拓展'];
+const MOD_COLOR = {
+  'BIM基础':'#0e7490','识图与管理':'#7c3aed','碳排放':'#0f766e',
+  '能耗模拟':'#b45309','低碳运维':'#1d4ed8','作品赛':'#b91c1c','智慧水利拓展':'#0369a1'
+};
+const MOD_ICON = {'BIM基础':'🏗','识图与管理':'📐','碳排放':'🌱','能耗模拟':'⚡','低碳运维':'🛰','作品赛':'🏆','智慧水利拓展':'💧'};
+
+const BANK = (RAW_BANK||[]).map((q,i)=>{
+  const it = Object.assign({}, q);
+  it.options = Array.isArray(it.options)? it.options.slice() : [];
+  it.answer = Array.isArray(it.answer)? it.answer.slice() : [];
+  it.tags = Array.isArray(it.tags)? it.tags.slice() : [];
+  it.id = it.id || ('q'+i);
+  it.kp = it.kp || '';
+  it.explanation = it.explanation || '';
+  it.difficulty = it.difficulty || 2;
+  it.origin = it.origin || 'plus';
+  it.disp = it.tags.includes('水利结合') ? '智慧水利拓展'
+        : (MODULES.includes(it.module) ? it.module : '低碳运维');
+  return it;
+});
+const byId = {}; BANK.forEach(q=>byId[q.id]=q);
+const MOCK_ITEMS = BANK.filter(q=>q.origin==='mock');
+const CORE_ITEMS = BANK.filter(q=>q.type!=='qa' && q.disp!=='智慧水利拓展');
+const QA_ITEMS  = BANK.filter(q=>q.type==='qa');
+const countMod = m => BANK.filter(q=>q.disp===m && q.type!=='qa').length;
+
+/* ============================================================
+   屏幕切换
+   ============================================================ */
+function show(id){
+  $$('.screen').forEach(s=>s.classList.remove('active'));
+  $('#scr-'+id).classList.add('active');
+  window.scrollTo({top:0,behavior:'smooth'});
+  if(id==='home') renderHome();
+}
+document.addEventListener('click', e=>{
+  const b = e.target.closest('[data-go]');
+  if(b){ const t=b.dataset.go; if(t==='home'){ if(SESS && SESS.timer) clearInterval(SESS.timer); } show(t); }
+});
+
+/* ============================================================
+   首页
+   ============================================================ */
+function renderHome(){
+  $('#pill-total').textContent = BANK.length;
+  $('#st-answered').textContent = STAT.answered;
+  $('#st-acc').textContent = STAT.answered ? pct(STAT.correct, STAT.answered)+'%' : '—';
+  $('#st-wrong').textContent = WRONG.length;
+  $('#st-mock').textContent = MOCKN;
+}
+
+/* ============================================================
+   会话状态
+   ============================================================ */
+let SESS = null;  // {mode:'exam'|'practice', list:[q], idx, sel:{}, locked:{}, answers:{}, startTs, timer, graded:{}}
+let LEN = 10;
+
+/* ============================================================
+   开始考试
+   ============================================================ */
+function buildExamPaper(kind){
+  if(kind==='mock' && MOCK_ITEMS.length>=20){
+    return MOCK_ITEMS.slice();
+  }
+  const singles = CORE_ITEMS.filter(q=>q.type==='single');
+  const multis  = CORE_ITEMS.filter(q=>q.type==='multi');
+  const paper = sample(singles, Math.min(50, singles.length))
+    .concat(sample(multis, Math.min(10, multis.length)));
+  return paper;
+}
+
+function startExam(){
+  const useMock = MOCK_ITEMS.length>=55 && confirm('用第 12 届模拟原卷（60 题）开始限时模拟？\n\n点「取消」则从全部题库随机抽 50 单选 + 10 多选。');
+  const list = buildExamPaper(useMock? 'mock':'random');
+  SESS = {
+    mode:'exam', list, idx:0, sel:{}, locked:{}, answers:{}, shuf:{},
+    startTs: Date.now(), timer:null, left: 80*60, graded:{}
+  };
+  list.forEach(q=>{ SESS.answers[q.id] = []; });
+  show('quiz');
+  $('#btn-finish').classList.remove('hidden');
+  $('#btn-finish').textContent = '交卷';
+  $('#btn-sheet').classList.remove('hidden');
+  $('#timer').classList.remove('hidden');
+  $('#btn-exit').classList.remove('hidden');
+  tickTimer(); SESS.timer = setInterval(tickTimer, 1000);
+  renderQ();
+}
+
+function tickTimer(){
+  if(!SESS) return;
+  SESS.left--;
+  if(SESS.left<0){ SESS.left=0; clearInterval(SESS.timer); SESS.timer=null; toast('时间到，自动交卷'); finishExam(true); return; }
+  const m = Math.floor(SESS.left/60), s = SESS.left%60;
+  const el=$('#timer'); el.textContent = String(m).padStart(2,'0')+':'+String(s).padStart(2,'0');
+  el.classList.toggle('low', SESS.left<=600);
+}
+
+/* ============================================================
+   开始专项
+   ============================================================ */
+function enterPracticeSession(list){
+  SESS = {mode:'practice', list, idx:0, sel:{}, locked:{}, answers:{}, shuf:{}, startTs:Date.now(), timer:null, graded:{}};
+  show('quiz');
+  $('#btn-finish').classList.remove('hidden');
+  $('#btn-finish').textContent = '结束练习';
+  $('#btn-sheet').classList.add('hidden');
+  $('#timer').classList.add('hidden');
+  renderQ();
+}
+
+function startPractice(mod){
+  let pool = BANK.filter(q=>q.type!=='qa' && q.disp===mod);
+  if(!pool.length){ toast('这个模块还没有题'); return; }
+  const n = LEN===0? pool.length : Math.min(LEN, pool.length);
+  const list = sample(pool, n);
+  enterPracticeSession(list);
+}
+
+/* ============================================================
+   渲染题目
+   ============================================================ */
+function current(){ return SESS? SESS.list[SESS.idx] : null; }
+function isLocked(q){ return !!(SESS && SESS.locked[q.id]); }
+function getSel(q){ return (SESS && SESS.answers[q.id]) || []; }
+function setSel(q, arr){ SESS.answers[q.id] = arr; }
+
+function renderQ(){
+  if(!SESS) return;
+  const q = current(); if(!q) return;
+  const locked = isLocked(q);
+  const sel = getSel(q);
+  const n = SESS.list.length;
+
+  // 顶部
+  $('#prog').style.width = ((SESS.idx+ (locked?1:0))/n*100).toFixed(1)+'%';
+  $$('#quiz-card .opt').forEach(()=>{});
+
+  const water = q.disp==='智慧水利拓展';
+  const tagType = q.type==='multi'? '多选题' : '单选题';
+  const html = `
+    <div class="qmeta">
+      <span class="tag" style="background:${MOD_COLOR[q.disp]}14;color:${MOD_COLOR[q.disp]}">${MOD_ICON[q.disp]||''} ${esc(q.disp)}</span>
+      <span class="tag gray">${tagType}</span>
+      <span class="tag gray">难度 ${'★'.repeat(q.difficulty)}</span>
+      ${water? '<span class="tag water">智慧水利融合</span>':''}
+      ${SESS.mode==='exam'? `<span class="tag gray">${SESS.idx+1} / ${n}</span>`:''}
+    </div>
+    <div class="stem">${esc(q.stem)}</div>
+    <div class="opts" id="opt-wrap">${buildOpts(q, sel, locked)}</div>
+    <div id="explain-wrap">${locked? explainHTML(q, sel, false):''}</div>
+    <div class="actions" id="act-wrap">${buildActions(q, locked)}</div>
+  `;
+  $('#quiz-card').innerHTML = html;
+}
+
+function buildOpts(q, sel, locked){
+  const perm = (SESS && SESS.shuf && SESS.shuf[q.id]) || shuffle(q.options.map((_,i)=>i));
+  if(SESS && SESS.shuf) SESS.shuf[q.id] = perm;
+  q.__perm = perm;
+  return perm.map((ori, j)=>{
+    let cls='opt';
+    if(locked){
+      if(q.answer.includes(ori)) cls+=' ok';
+      else if(sel.includes(ori)) cls+=' no';
+      else cls+=' dim';
+    }else if(sel.includes(ori)) cls+=' sel';
+    return `<button class="${cls}" data-ori="${ori}" ${locked?'disabled':''}>
+      <span class="k">${LETTERS[j]}</span><span class="t">${esc(q.options[ori])}</span></button>`;
+  }).join('');
+}
+
+function buildActions(q, locked){
+  if(SESS.mode==='exam'){
+    return `<button class="iconbtn" id="btn-prev" ${SESS.idx===0?'disabled':''}>← 上一题</button>
+            <button class="iconbtn primary" id="btn-next">${SESS.idx===SESS.list.length-1?'检查答题卡':'下一题 →'}</button>
+            <span class="spacer"></span><span class="hint">${q.type==='multi'?'多选题：选完可直接下一题':'可随时改答案'}</span>`;
+  }
+  // 专项
+  if(locked){
+    return `<button class="iconbtn" id="btn-prev" ${SESS.idx===0?'disabled':''}>← 上一题</button>
+            <button class="iconbtn primary" id="btn-next">${SESS.idx===SESS.list.length-1?'查看本次结果':'下一题 →'}</button>`;
+  }
+  // 单选：点选项即判；多选：需提交
+  return `${q.type==='multi'
+      ? `<button class="iconbtn primary" id="btn-submit">提交本题</button>`
+      : `<span class="hint">点选项直接判对错</span>`}
+      <span class="spacer"></span><span class="hint">${SESS.idx+1} / ${SESS.list.length}</span>`;
+}
+
+function explainHTML(q, sel, examMode){
+  const right = q.answer.map(i=>LETTERS[q.__perm? q.__perm.indexOf(i):i]).filter(Boolean).join('');
+  const correctText = q.answer.map(i=>esc(q.options[i])).join('；');
+  const mine = sel.length? sel.map(i=>esc(q.options[i])).join('；') : '未作答';
+  const ok = sameSet(sel, q.answer);
+  return `<div class="explain">
+    <div class="ansline">正确答案：<b>${right}</b>（${correctText}）${ok? '　✅ 你答对了':'　❌ 你选的是：'+mine}</div>
+    <div>${esc(q.explanation)}</div>
+    <div class="kp">考点：${esc(q.kp)}${q.source? ' ｜ 来源：'+esc(q.source):''}</div>
+  </div>`;
+}
+
+/* 选项点击（事件委托） */
+$('#quiz-card').addEventListener('click', e=>{
+  const opt = e.target.closest('.opt');
+  if(opt && !opt.disabled && SESS){
+    const q = current(); if(!q || isLocked(q)) return;
+    const ori = Number(opt.dataset.ori);
+    let sel = getSel(q).slice();
+    if(q.type==='multi'){
+      sel = sel.includes(ori)? sel.filter(x=>x!==ori) : sel.concat(ori);
+      setSel(q, sel); renderQ();
+      return;
+    }
+    sel = [ori]; setSel(q, sel);
+    if(SESS.mode==='practice'){ gradeQ(); }
+    else { renderQ(); }
+  }
+  const id = e.target.id;
+  if(id==='btn-next'){ nextQ(); }
+  if(id==='btn-prev'){ SESS.idx=Math.max(0,SESS.idx-1); renderQ(); }
+  if(id==='btn-submit'){ gradeQ(); }
+});
+
+function gradeQ(){
+  const q = current(); if(!q) return;
+  const sel = getSel(q);
+  if(!sel.length){ toast('先选一个答案'); return; }
+  SESS.locked[q.id] = true;
+  const ok = sameSet(sel, q.answer);
+  noteStat(q.disp, ok);
+  if(ok) delWrong(q.id); else addWrong(q.id);
+  renderQ();
+  if(SESS.mode==='practice'){
+    // 滚到解析
+    const ex = $('#explain-wrap'); if(ex) setTimeout(()=>ex.scrollIntoView({behavior:'smooth',block:'center'}),80);
+  }
+}
+
+function nextQ(){
+  if(!SESS) return;
+  if(SESS.idx < SESS.list.length-1){ SESS.idx++; renderQ(); }
+  else {
+    if(SESS.mode==='exam'){ if(confirm('已经到最后一题，交卷吗？')) finishExam(false); else { renderQ(); toast('用「答题卡」检查未答题'); } }
+    else finishPractice();
+  }
+}
+
+/* ============================================================
+   交卷 / 结果
+   ============================================================ */
+function finishExam(auto){
+  if(!SESS) return;
+  if(SESS.timer){ clearInterval(SESS.timer); SESS.timer=null; }
+  const list = SESS.list;
+  let right=0;
+  const detail = list.map(q=>{
+    const sel = SESS.answers[q.id]||[];
+    const ok = sameSet(sel, q.answer);
+    if(ok) right++;
+    noteStat(q.disp, ok);
+    if(ok) delWrong(q.id); else if(sel.length) addWrong(q.id);
+    return {q, sel, ok};
+  });
+  MOCKN++; save(SK.mock, MOCKN);
+  const used = Math.min(80*60, Math.floor((Date.now()-SESS.startTs)/1000));
+  renderResult({
+    mode:'exam', total:list.length, right, detail,
+    used, auto
+  });
+  SESS = null;
+}
+
+function finishPractice(){
+  if(!SESS) return;
+  const list = SESS.list;
+  const answered = list.filter(q=>(SESS.answers[q.id]||[]).length>0);
+  if(!answered.length){ toast('还没答题，先去选几个'); return; }
+  const detail = answered.map(q=>({q, sel:SESS.answers[q.id]||[], ok: sameSet(SESS.answers[q.id]||[], q.answer)}));
+  const right = detail.filter(d=>d.ok).length;
+  renderResult({mode:'practice', total:detail.length, right, detail});
+  SESS = null;
+}
+
+function renderResult(r){
+  const rate = pct(r.right, r.total);
+  const deg = rate*3.6;
+  const ringColor = rate>=80? '#0f766e' : rate>=60? '#0e7490' : '#e11d48';
+  const mods = {};
+  r.detail.forEach(d=>{
+    const m = mods[d.q.disp] || (mods[d.q.disp]={a:0,c:0});
+    m.a++; if(d.ok) m.c++;
+  });
+  const wrongs = r.detail.filter(d=>!d.ok);
+  const title = r.mode==='exam'
+    ? (rate>=80? '很稳，保持手感' : rate>=60? '过线了，把错题啃掉' : '差距在必背点上，先看速记卡')
+    : (rate>=80? '这一章基本过关' : '把刚才错的点回看一眼');
+
+  const bars = Object.keys(mods).map(m=>`
+    <div class="brow"><span style="color:${MOD_COLOR[m]||'#334155'};font-weight:600">${esc(m)}</span>
+      <div class="track"><i style="width:${pct(mods[m].c,mods[m].a)}%;background:${MOD_COLOR[m]||'#0e7490'}"></i></div>
+      <span class="pct">${mods[m].c}/${mods[m].a}</span></div>`).join('');
+
+  const reviewHTML = wrongs.length? wrongs.map(d=>`
+    <div class="rv">
+      <div class="h">${esc(d.q.stem)}</div>
+      <div class="line bad">你选：${d.sel.length? esc(d.sel.map(i=>d.q.options[i]).join('；')) : '未作答'}</div>
+      <div class="line good">正确：${esc(d.q.answer.map(i=>d.q.options[i]).join('；'))}</div>
+      <div class="ex">${esc(d.q.explanation)}</div>
+      <div class="line" style="color:#94a3b8;margin-top:6px;font-size:12px">${esc(d.q.disp)} · ${esc(d.q.kp)}</div>
+    </div>`).join('') : '<div class="empty">没有错题，漂亮 👏</div>';
+
+  $('#result-body').innerHTML = `
+    <div class="card">
+      <div class="result-hero">
+        <div class="ring" style="background:conic-gradient(${ringColor} ${deg}deg,#dbe7ee ${deg}deg)">
+          <div class="val" style="color:${ringColor}">${rate}%</div>
+          <div class="sub">正确率</div>
+        </div>
+        <h2>${title}</h2>
+        <p>${r.mode==='exam'? `得分 ${r.right} / ${r.total} · 用时 ${Math.floor(r.used/60)} 分 ${r.used%60} 秒${r.auto?' · 超时自动交卷':''}` : `本次 ${r.total} 题，做对 ${r.right} 题`}</p>
+      </div>
+      <div class="btns" style="justify-content:center">
+        ${r.mode==='exam'? `<button class="iconbtn primary" id="again">再考一次</button>`:''}
+        ${wrongs.length? `<button class="iconbtn" id="redo">重做这 ${wrongs.length} 道错题</button>`:''}
+        <button class="iconbtn" data-go="home">回首页</button>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sec-title"><h2>各模块表现</h2></div>
+      <div class="bars">${bars}</div>
+    </div>
+    <div class="card">
+      <div class="sec-title"><h2>错题讲评</h2><span class="tip">${wrongs.length} 道</span></div>
+      <div class="review">${reviewHTML}</div>
+    </div>
+  `;
+  show('result');
+  const again = $('#again'); if(again) again.onclick = startExam;
+  const redo = $('#redo'); if(redo) redo.onclick = ()=> enterPracticeSession(wrongs.map(w=>w.q));
+}
+
+/* ============================================================
+   答题卡
+   ============================================================ */
+$('#btn-sheet').onclick = ()=>{
+  if(!SESS) return;
+  const n=SESS.list.length;
+  const answered = SESS.list.filter(q=>(SESS.answers[q.id]||[]).length>0).length;
+  $('#sheet-legend').textContent = `已答 ${answered} / ${n} · 点格子跳题`;
+  $('#sheet-grid').innerHTML = SESS.list.map((q,i)=>{
+    const done = (SESS.answers[q.id]||[]).length>0;
+    return `<button class="cell ${i===SESS.idx?'cur':''} ${done&&i!==SESS.idx?'done':''}" data-i="${i}">${i+1}</button>`;
+  }).join('');
+  $('#sheet').classList.add('on');
+};
+$('#sheet-close').onclick = ()=> $('#sheet').classList.remove('on');
+$('#sheet-grid').addEventListener('click', e=>{
+  const c = e.target.closest('.cell'); if(!c||!SESS) return;
+  SESS.idx = Number(c.dataset.i); $('#sheet').classList.remove('on'); renderQ();
+});
+$('#btn-finish').onclick = ()=>{
+  if(!SESS) return;
+  if(SESS.mode==='exam'){
+    const un = SESS.list.filter(q=>(SESS.answers[q.id]||[]).length===0).length;
+    if(confirm(un? `还有 ${un} 题没答，确定交卷？`:'确定交卷？')) finishExam(false);
+  } else {
+    const done = SESS.list.filter(q=>(SESS.answers[q.id]||[]).length>0).length;
+    if(confirm(`本次已做 ${done} 题，结束并看结果？`)) finishPractice();
+  }
+};
+$('#btn-exit').onclick = ()=>{
+  if(!SESS) return;
+  const msg = SESS.mode==='exam' ? '退出后本场模拟不记分、不保存，确定退出？' : '退出当前练习？已答的题不会计入本次结果。';
+  if(!confirm(msg)) return;
+  if(SESS.timer) clearInterval(SESS.timer);
+  SESS = null;
+  show('home');
+};
+
+/* ============================================================
+   专项选择页
+   ============================================================ */
+function renderPracticeScreen(){
+  $('#module-list').innerHTML = MODULES.map(m=>{
+    const n = countMod(m);
+    if(!n) return '';
+    return `<button class="mode" data-mod="${esc(m)}">
+      <div class="ico" style="background:${MOD_COLOR[m]}14">${MOD_ICON[m]}</div>
+      <div class="txt"><b>${esc(m)}</b><small>${n} 题${m==='智慧水利拓展'?' · 考试不考，做作品赛加分用':''}</small></div>
+      <div class="go">开始 →</div></button>`;
+  }).join('');
+}
+$('#len-chips').addEventListener('click', e=>{
+  const c = e.target.closest('.chip'); if(!c) return;
+  $$('#len-chips .chip').forEach(x=>x.classList.remove('on'));
+  c.classList.add('on'); LEN = Number(c.dataset.len);
+});
+$('#module-list').addEventListener('click', e=>{
+  const b = e.target.closest('[data-mod]'); if(!b) return;
+  startPractice(b.dataset.mod);
+});
+
+/* ============================================================
+   问答
+   ============================================================ */
+function renderQA(){
+  if(!QA_ITEMS.length){ $('#qa-wrap').innerHTML='<div class="empty">题库里还没有问答题</div>'; return; }
+  $('#qa-wrap').innerHTML = QA_ITEMS.map((q,i)=>`
+    <div class="qa-item" data-id="${esc(q.id)}">
+      <div class="qmeta">
+        <span class="tag" style="background:${MOD_COLOR[q.disp]}14;color:${MOD_COLOR[q.disp]}">${esc(q.disp)}</span>
+        <span class="tag gray">问答 ${i+1}/${QA_ITEMS.length}</span>
+        <span class="tag gray">难度 ${'★'.repeat(q.difficulty)}</span>
+        ${q.tags.includes('水利结合')? '<span class="tag water">水利结合</span>':''}
+      </div>
+      <div class="stem">${esc(q.stem)}</div>
+      <textarea data-ta="${esc(q.id)}" placeholder="在这里写你的答案……写关键词就行，能写几点写几点">${esc(QATXT[q.id]||'')}</textarea>
+      <div class="actions">
+        <button class="iconbtn primary" data-act="ref" data-id="${esc(q.id)}">显示参考答案</button>
+        <button class="iconbtn" data-act="score" data-id="${esc(q.id)}">采分点自检</button>
+        <span class="spacer"></span>
+        <span class="hint" data-res="${esc(q.id)}"></span>
+      </div>
+      <div class="ref" data-ref="${esc(q.id)}"></div>
+    </div>`).join('');
+}
+$('#qa-wrap').addEventListener('input', e=>{
+  const ta = e.target.closest('textarea'); if(!ta) return;
+  QATXT[ta.dataset.ta] = ta.value; save(SK.qa, QATXT);
+});
+$('#qa-wrap').addEventListener('click', e=>{
+  const b = e.target.closest('[data-act]'); if(!b) return;
+  const id = b.dataset.id, q = byId[id]; if(!q) return;
+  if(b.dataset.act==='ref'){
+    const box = document.querySelector(`[data-ref="${CSS.escape(id)}"]`);
+    const kws = (q.keywords||[]).map(k=>`<button class="kw" data-kw="${esc(k)}" data-qid="${esc(id)}">${esc(k)}</button>`).join('');
+    box.innerHTML = `<b>参考答案</b>\n${esc(q.reference||'')}\n\n<b style="display:inline-block;margin-top:10px">采分点（点中你写到的）</b>\n<div class="kws">${kws}</div>`;
+    box.classList.add('on');
+    b.textContent = '隐藏参考答案';
+    b.dataset.on = '1';
+  } else if(b.dataset.act==='score'){ selfScore(id); }
+});
+$('#qa-wrap').addEventListener('click', e=>{
+  const kw = e.target.closest('.kw'); if(!kw) return;
+  kw.classList.toggle('on');
+  selfScore(kw.dataset.qid);
+});
+function selfScore(id){
+  const q = byId[id]; if(!q) return;
+  const box = document.querySelector(`[data-ref="${CSS.escape(id)}"]`);
+  if(box && !box.classList.contains('on')){
+    const btn = document.querySelector(`[data-act="ref"][data-id="${CSS.escape(id)}"]`);
+    if(btn) btn.click();
+  }
+  const total = (q.keywords||[]).length||1;
+  const hit = $$(`.kw.on[data-qid="${CSS.escape(id)}"]`).length;
+  const res = document.querySelector(`[data-res="${CSS.escape(id)}"]`);
+  if(res){
+    const p = pct(hit,total);
+    res.innerHTML = `采分点 ${hit}/${total} · 覆盖率 <b style="color:${p>=60?'#15803d':p>=40?'#b45309':'#be123c'}">${p}%</b>`;
+  }
+}
+/* 返回问答页时恢复已写内容 */
+const _show = show;
+show = function(id){ _show(id); if(id==='qa') renderQA(); };
+
+/* ============================================================
+   错题本
+   ============================================================ */
+function renderWrong(){
+  const items = WRONG.map(id=>byId[id]).filter(Boolean);
+  if(!items.length){ $('#wrong-wrap').innerHTML = '<div class="empty">错题本是空的。去模拟或专项练几题，错的会自动进来。</div>'; return; }
+  $('#wrong-wrap').innerHTML = `
+    <div class="actions" style="margin:0 0 14px">
+      <button class="iconbtn primary" id="wrong-practice">全部重做（${items.length} 题）</button>
+      <button class="iconbtn" id="wrong-clear">清空错题本</button>
+    </div>` + items.map(q=>`
+    <div class="qa-item">
+      <div class="qmeta">
+        <span class="tag" style="background:${MOD_COLOR[q.disp]}14;color:${MOD_COLOR[q.disp]}">${esc(q.disp)}</span>
+        <span class="tag gray">${q.type==='multi'?'多选':'单选'}</span>
+        <span class="tag gray">${esc(q.kp)}</span>
+        <button class="iconbtn" data-rm="${esc(q.id)}">移出</button>
+      </div>
+      <div class="stem">${esc(q.stem)}</div>
+      <div class="line" style="font-size:13.5px;color:#15803d">正确：${esc(q.answer.map(i=>q.options[i]).join('；'))}</div>
+      <div class="ex" style="font-size:13.5px;color:#334155;margin-top:7px;background:#fff;border-left:3px solid #f1b34b;padding:8px 10px;border-radius:0 8px 8px 0">${esc(q.explanation)}</div>
+      <div class="actions"><button class="iconbtn" data-one="${esc(q.id)}">单题重做</button></div>
+    </div>`).join('');
+}
+$('#wrong-wrap').addEventListener('click', e=>{
+  const b = e.target.closest('button'); if(!b) return;
+  if(b.dataset.rm){ delWrong(b.dataset.rm); renderWrong(); return; }
+  if(b.id==='wrong-clear'){ if(confirm('清空错题本？')){ WRONG=[]; save(SK.wrong,WRONG); renderWrong(); } return; }
+  const ids = b.id==='wrong-practice' ? WRONG.slice() : (b.dataset.one? [b.dataset.one]:[]);
+  const list = ids.map(id=>byId[id]).filter(Boolean);
+  if(!list.length) return;
+  enterPracticeSession(list);
+});
+
+/* ============================================================
+   速记卡
+   ============================================================ */
+const NOTES = [
+  ['双碳时间表','碳达峰 2030 年，碳中和 2060 年。'],
+  ['BIM 五大特点','可视化、协调性、模拟性、优化性、可出图性。'],
+  ['LOD 等级','LOD 100–500，数字越大越“细”；LOD 500 用于竣工交付与运维。'],
+  ['IFC 是什么','buildingSMART 发布的开放数据交换标准，不是软件。'],
+  ['四个国标别记混','GB/T 51212 应用统一 ｜ 51235 施工应用 ｜ 51301 设计交付 ｜ 51269 分类编码。'],
+  ['碰撞两类','硬碰撞=实体相交；软碰撞=间距不足（不打架但装不下/修不了）。'],
+  ['GB/T 51366-2019','建筑碳排放四阶段：建材生产与运输、建造、运行、拆除；其中运行阶段占比最大。'],
+  ['排放因子法','排放量 = 活动数据 × 排放因子（电用得越多 × 电网因子 = 运行碳排放）。'],
+  ['两个大数','建筑全过程能耗约占全国 45%，碳排放约占 50%（2020 口径，行业常用大数）。'],
+  ['绿建 GB/T 50378-2019','五类指标：安全耐久、健康舒适、生活便利、资源节约、环境宜居；等级：基本级/一星/二星/三星（没有四星）。'],
+  ['三个“越大越不利”','体形系数=外表面积÷所包围体积，越大越不利；窗墙面积比过大不利；K 值（传热系数）越小越保温。'],
+  ['分项计量四类','照明插座、空调、动力、特殊用电——找能耗大户的第一步。'],
+  ['EMC 合同能源管理','节能服务公司出钱改造，用省下来的能耗费用分成回本。'],
+  ['运维五类功能 FM','空间管理、资产管理、维护维修、应急管理、能耗管理。'],
+  ['楼宇控制三件套','BAS 楼宇自控系统 → DDC 现场控制器 → BACnet/Modbus 通信协议。'],
+  ['智慧管控闭环','监测 → 报警 → 派单 → 处置 → 复核；闭环的关键是“闭环”，不是装传感器。'],
+  ['老旧小区改造三类','基础类（水电气路、安全）、完善类（建筑节能改造、加装电梯）、提升类（养老托育、公共服务）。'],
+  ['能耗模拟软件','EnergyPlus（美国能源部）｜ DeST（清华大学）｜ 广联达 BIM 安装算量 GQI2026（建模算量，非能耗模拟）。']
+];
+function renderNotes(){
+  $('#notes-wrap').innerHTML = NOTES.map(([t,d],i)=>`
+    <div class="note"><div class="num">${i+1}</div><div><b>${esc(t)}</b><p>${esc(d)}</p></div></div>`).join('');
+}
+
+/* ============================================================
+   模式入口
+   ============================================================ */
+$('#mode-exam').onclick = startExam;
+$('#mode-practice').onclick = ()=>{ renderPracticeScreen(); show('practice'); };
+$('#mode-notes').onclick = ()=>{ renderNotes(); show('notes'); };
+$('#mode-qa').onclick = ()=>{ renderQA(); show('qa'); };
+$('#mode-wrong').onclick = ()=>{ renderWrong(); show('wrong'); };
+
+/* ============================================================
+   键盘快捷键
+   ============================================================ */
+document.addEventListener('keydown', e=>{
+  if(!$('#scr-quiz').classList.contains('active') || !SESS) return;
+  if(e.target.tagName==='TEXTAREA' || e.target.tagName==='INPUT') return;
+  const q = current(); if(!q) return;
+  const k = e.key.toUpperCase();
+  const idx = LETTERS.indexOf(k);
+  if(idx>=0 && idx<q.options.length){
+    e.preventDefault();
+    const optBtn = $$('#quiz-card .opt')[idx];
+    if(optBtn) optBtn.click();
+  }
+  if(e.key==='Enter'){
+    e.preventDefault();
+    if(SESS.mode==='exam'){ nextQ(); }
+    else if(isLocked(q)){ nextQ(); }
+    else if(q.type==='multi'){ gradeQ(); }
+  }
+  if(e.key==='ArrowRight') nextQ();
+  if(e.key==='ArrowLeft'){ if(SESS.idx>0){SESS.idx--; renderQ();} }
+});
+
+/* ============================================================
+   启动
+   ============================================================ */
+renderHome();
+window.addEventListener('beforeunload', e=>{
+  if(SESS && SESS.mode==='exam'){ e.preventDefault(); e.returnValue=''; }
+});
+</script>
+</body>
+</html>
